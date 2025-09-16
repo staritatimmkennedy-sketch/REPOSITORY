@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Materials • Repository Admin</title>
+  <link rel="stylesheet" href="style.css"/>
+    <link rel="stylesheet" href="style-content.css"/>
+    <link rel="stylesheet" href="materials.css"/>
+  <script defer src="script.js"></script>
+    <script defer src="materials.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo"></div>
+        <div>
+          <div class="title">Repository Admin</div>
+          <div class="small">Digital Repository Dashboard</div>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <div id="nav-overview" class="nav-item">
+          <div class="nav-left">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M3 12l2-2 4 4 8-8 4 4" stroke-width="2"/>
+            </svg>
+            <a href="index.html">Overview</a>
+          </div>
+        </div>
+
+        <button id="nav-users" class="nav-item" data-toggle="submenu" data-target="sub-users">
+          <div class="nav-left">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <circle cx="8" cy="8" r="3" stroke-width="2"/>
+              <circle cx="16" cy="16" r="3" stroke-width="2"/>
+              <path d="M1 21c0-3.5 3.5-6 7-6" stroke-width="2"/>
+              <path d="M23 21c0-3.5-3.5-6-7-6" stroke-width="2"/>
+            </svg>
+            <span>Users</span>
+          </div>
+          <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 18l6-6-6-6" stroke-width="2"/></svg>
+        </button>
+        <div id="sub-users" class="submenu">
+          <a href="users.html#admin">• Admin</a>
+          <a href="users.html#faculty">• Faculty</a>
+          <a href="users.html#student">• Student</a>
+          <a href="users.html#staff">• Staff</a>
+        </div>
+
+        <button id="nav-materials" class="nav-item" data-toggle="submenu" data-target="sub-materials">
+          <div class="nav-left">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <rect x="3" y="4" width="18" height="14" rx="2" stroke-width="2"/>
+              <path d="M7 8h10M7 12h6" stroke-width="2"/>
+            </svg>
+            <span>Materials</span>
+          </div>
+          <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 18l6-6-6-6" stroke-width="2"/></svg>
+        </button>
+        <div id="sub-materials" class="submenu">
+          <a href="materials.html#research">• Research</a>
+          <a href="materials.html#unpublished">• Unpublish Documents</a>
+          <a href="materials.html#video">• Video</a>
+          <a href="materials.html#ebooks">• E-Books</a>
+        </div>
+
+        <button id="nav-submissions" class="nav-item" data-toggle="submenu" data-target="sub-submissions">
+          <div class="nav-left">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M12 3v12M5 10l7 7 7-7" stroke-width="2"/>
+            </svg>
+            <span>Submissions</span>
+          </div>
+          <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 18l6-6-6-6" stroke-width="2"/></svg>
+        </button>
+        <div id="sub-submissions" class="submenu">
+          <a href="submissions.html#student">• Student Submissions</a>
+          <a href="submissions.html#faculty">• Faculty Submissions</a>
+        </div>
+
+        <div id="nav-requests" class="nav-item">
+          <div class="nav-left">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M12 2l7 4v6c0 5-3.5 9-7 10-3.5-1-7-5-7-10V6l7-4z" stroke-width="2"/>
+              <path d="M12 8v4" stroke-width="2"/>
+            </svg>
+            <a href="requests.html">Access Requests</a>
+          </div>
+        </div>
+
+<!-- Master Data Menu -->
+<!-- Master Data Menu -->
+<button id="nav-masterdata" class="nav-item" data-toggle="submenu" data-target="sub-masterdata">
+  <div class="nav-left">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+      <path d="M4 6h16M4 12h16M4 18h16" stroke-width="2"/>
+    </svg>
+    <span>Master Data</span>
+  </div>
+  <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+    <path d="M9 18l6-6-6-6" stroke-width="2"/>
+  </svg>
+</button>
+
+<div id="sub-masterdata" class="submenu">
+  <!-- Direct links -->
+
+  
+
+  <!-- Academic dropdown -->
+  <button class="nav-item" data-toggle="submenu" data-target="sub-academic">
+    <div class="nav-left">
+      <span>Academic Management</span>
+    </div>
+    <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+      <path d="M9 18l6-6-6-6" stroke-width="2"/>
+    </svg>
+  </button>
+  <div id="sub-academic" class="submenu">
+    <a href="academic.html#College">• College</a>
+    <a href="academic.html#Course">• Course</a>
+  </div>
+
+  <!-- Material dropdown -->
+  <button class="nav-item" data-toggle="submenu" data-target="sub-material">
+    <div class="nav-left">
+      <span>Material Managemnt</span>
+    </div>
+    <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+      <path d="M9 18l6-6-6-6" stroke-width="2"/>
+    </svg>
+  </button>
+  <div id="sub-material" class="submenu">
+    <a href="materialmanagement.html#material">• Material</a>
+    <a href="materialmanagement.html#materialtype">• Material Type</a>
+  </div>
+
+ <button class="nav-item" data-toggle="submenu" data-target="sub-usermanagement">
+    <div class="nav-left">
+      <span>User Management</span>
+    </div>
+    <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+      <path d="M9 18l6-6-6-6" stroke-width="2"/>
+    </svg>
+  </button>
+  <div id="sub-usermanagement" class="submenu">
+  <a href="usermasterdata.html#user">• User</a>
+  <a href="usermasterdata.html#role">• Role</a>
+   </div>
+
+    <a href="penaltymasterdata.html#penalty">• Penalty Time</a>
+</div>
+
+
+      </nav>
+    </aside>
+
+    <header class="topbar">
+      <button id="toggleSidebar" class="sidebar-toggle">
+    ☰
+  </button>
+      <div class="search">
+        <input type="text" placeholder="Search... (static demo)" />
+      </div>
+      <div class="actions">
+        <div class="icon-btn" id="notifBtn" title="Notifications" style="position:relative">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M18 8a6 6 0 00-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9" stroke-width="2"/>
+            <path d="M13.73 21a2 2 0 01-3.46 0" stroke-width="2"/>
+          </svg>
+          <span class="badge">3</span>
+        </div>
+        <div class="dropdown" id="notifMenu">
+          <div><strong>New:</strong> 1 pending request</div>
+          <div>Submission S001 requires review</div>
+          <div>System maintenance on Aug 30</div>
+        </div>
+
+        <div class="icon-btn" id="accountBtn" title="Account" style="position:relative">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <circle cx="12" cy="8" r="4" stroke-width="2"/>
+            <path d="M4 22c0-4 4-6 8-6s8 2 8 6" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="dropdown" id="accountMenu">
+          <a href="#">Profile</a>
+          <a href="#">Settings</a>
+          <a href="#">Logout</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="main">
+
+  
+
+    <!-- ===== RESEARCH ===== -->
+    <section id="research" class="section is-active" role="tabpanel" aria-labelledby="tab-research" data-section="research">
+      <div class="card">
+        <header class="card-head">
+          <h2>Research Materials</h2>
+
+          <!-- Controls are semantic and ready for JS wiring -->
+          <form class="controls" data-controls="research" aria-label="Filters for Research">
+            <input type="search" name="q" placeholder="Search title, author…" aria-label="Search research">
+          
+            <select name="year" aria-label="Filter by year">
+              <option value="">All years</option>
+              <option>2025</option><option>2024</option><option>2023</option>
+            </select>
+            <button type="button" data-action="export" data-target="research">Export CSV</button>
+          </form>
+        </header>
+
+        <div class="table-wrap">
+          <table class="table" data-table="research">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Date Published</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Example static rows; replace later with data -->
+              <tr>
+                <td>R001</td>
+                <td>AI in Education</td>
+                <td>Dr. Maria Santos</td>
+                <td><time datetime="2023-05-12">May 12, 2023</time></td>
+                <td><span class="status success">Published</span></td>
+                <td class="row-actions">
+                  <button type="button" data-action="view">View</button>
+                  <button type="button" data-action="edit">Edit</button>
+                  <button type="button" data-action="download">Download</button>
+                  <button type="button" data-action="delete">Delete</button>
+                </td>
+              </tr>
+              <tr>
+                <td>R002</td>
+                <td>Climate Change Study</td>
+                <td>Juan Dela Cruz</td>
+                <td><time datetime="2022-11-08">Nov 8, 2022</time></td>
+                <td><span class="status success">Published</span></td>
+                <td class="row-actions">
+                <button type="button" data-action="view">View</button>
+                  <button type="button" data-action="edit">Edit</button>
+                  <button type="button" data-action="download">Download</button>
+                  <button type="button" data-action="delete">Delete</button>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="5">
+                  <div class="pagination" data-pager="research" aria-label="Research pagination">
+                    <button type="button" disabled data-page="prev">Prev</button>
+                    <span data-page="info">Page 1 of 1</span>
+                    <button type="button" disabled data-page="next">Next</button>
+                  </div>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+
+          <!-- Empty state (toggle via CSS/JS) -->
+          <div class="empty" hidden data-empty="research">
+            <p>No research materials match your filters.</p>
+            <button type="button" data-action="clear-filters" data-target="research">Clear filters</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== UNPUBLISHED ===== -->
+    <section id="unpublished" class="section" role="tabpanel" aria-labelledby="tab-unpublished" data-section="unpublished">
+      <div class="card">
+        <header class="card-head">
+          <h2>Unpublished Materials</h2>
+          <form class="controls" data-controls="unpublished" aria-label="Filters for Unpublished">
+            <input type="search" name="q" placeholder="Search title, submitter…" aria-label="Search unpublished">
+            
+            <input type="date" name="from" aria-label="From date">
+            <input type="date" name="to" aria-label="To date">
+            <button type="button" data-action="export" data-target="unpublished">Export CSV</button>
+          </form>
+        </header>
+
+        <div class="table-wrap">
+          <table class="table" data-table="unpublished">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Date Published</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>U001</td>
+                <td>Unpublished Thesis on AI</td>
+                <td>Carlos Reyes</td>
+                <td><time datetime="2024-01-15">Jan 15, 2024</time></td>
+                <td><span class="status pending">Pending Review</span></td>
+                <td class="row-actions">
+                  <button type="button" data-action="view">View</button>
+                  <button type="button" data-action="edit">Edit</button>
+                  <button type="button" data-action="download">Download</button>
+                  <button type="button" data-action="delete">Delete</button>
+                </td>
+              </tr>
+              <tr>
+                <td>U002</td>
+                <td>Journal Draft on Robotics</td>
+                <td>Sarah Johnson</td>
+                <td><time datetime="2023-10-22">Oct 22, 2023</time></td>
+                <td><span class="status warning">For Editing</span></td>
+                <td class="row-actions">
+                  <button type="button" data-action="view">View</button>
+                  <button type="button" data-action="edit">Edit</button>
+                  <button type="button" data-action="download">Download</button>
+                  <button type="button" data-action="delete">Delete</button>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="5">
+                  <div class="pagination" data-pager="unpublished" aria-label="Unpublished pagination">
+                    <button type="button" disabled data-page="prev">Prev</button>
+                    <span data-page="info">Page 1 of 1</span>
+                    <button type="button" disabled data-page="next">Next</button>
+                  </div>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+          <div class="empty" hidden data-empty="unpublished">
+            <p>No unpublished items found.</p>
+            <button type="button" data-action="clear-filters" data-target="unpublished">Clear filters</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== VIDEO ===== -->
+    <section id="video" class="section" role="tabpanel" aria-labelledby="tab-video" data-section="video">
+      <div class="card">
+        <header class="card-head">
+          <h2>Video Materials</h2>
+          <form class="controls" data-controls="video" aria-label="Filters for Video">
+            <input type="search" name="q" placeholder="Search title, uploader…" aria-label="Search video">
+            
+            <select name="duration" aria-label="Filter by duration">
+              <option value="">Any length</option>
+              <option value="short">&lt; 10 min</option>
+              <option value="medium">10–30 min</option>
+              <option value="long">&gt; 30 min</option>
+            </select>
+            <button type="button" data-action="export" data-target="video">Export CSV</button>
+          </form>
+        </header>
+
+        <div class="table-wrap">
+          <table class="table" data-table="video">
+            <thead>
+              <tr>
+                 <th>ID</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Date Published</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>V001</td> 
+                <td>AI Conference Highlights</td>
+                <td>Mark Tan</td>
+                <td><time datetime="2024-03-02">Mar 2, 2024</time></td>
+                <td><span class="status success">Published</span></td>
+                <td class="row-actions">
+                  <button type="button" data-action="view">View</button>
+                  <button type="button" data-action="edit">Edit</button>
+                  <button type="button" data-action="download">Download</button>
+                  <button type="button" data-action="delete">Delete</button>
+                </td>
+              </tr>
+              <tr>
+                <td>V002</td>
+                <td>Lab Experiment Recording</td>
+                <td>Ana Lopez</td>
+                <td><time datetime="2024-02-12">Feb 12, 2024</time></td>
+                <td><span class="status warning">Processing</span></td>
+                <td class="row-actions">
+                  <button type="button" data-action="view">View</button>
+                  <button type="button" data-action="edit">Edit</button>
+                  <button type="button" data-action="download">Download</button>
+                  <button type="button" data-action="delete">Delete</button>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="5">
+                  <div class="pagination" data-pager="video" aria-label="Video pagination">
+                    <button type="button" disabled data-page="prev">Prev</button>
+                    <span data-page="info">Page 1 of 1</span>
+                    <button type="button" disabled data-page="next">Next</button>
+                  </div>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+          <div class="empty" hidden data-empty="video">
+            <p>No video materials yet.</p>
+            <button type="button" data-action="clear-filters" data-target="video">Clear filters</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== E-BOOKS ===== -->
+    <section id="ebooks" class="section" role="tabpanel" aria-labelledby="tab-ebooks" data-section="ebooks">
+      <div class="card">
+        <header class="card-head">
+          <h2>E-Books</h2>
+          <form class="controls" data-controls="ebooks" aria-label="Filters for E-Books">
+            <input type="search" name="q" placeholder="Search title, author…" aria-label="Search e-books">
+            
+            <select name="type" aria-label="Filter by type">
+              <option value="">Any type</option>
+              <option>PDF</option>
+              <option>EPUB</option>
+              <option>MOBI</option>
+            </select>
+            <button type="button" data-action="export" data-target="ebooks">Export CSV</button>
+          </form>
+        </header>
+
+        <div class="table-wrap">
+          <table class="table" data-table="ebooks">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Date Published</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>E001</td>
+                <td>Intro to Machine Learning</td>
+                <td>Peter Cruz</td>
+                <td><time datetime="2023-09-14">Sep 14, 2023</time></td>
+                <td><span class="status success">Available</span></td>
+                <td class="row-actions">
+                  <button type="button" data-action="view">View</button>
+                  <button type="button" data-action="edit">Edit</button>
+                  <button type="button" data-action="download">Download</button>
+                  <button type="button" data-action="delete">Delete</button>
+                </td>
+              </tr>
+              <tr>
+                <td>E002</td>
+                <td>Quantum Computing Basics</td>
+                <td>Jane Doe</td>
+                <td><time datetime="2023-08-07">Aug 7, 2023</time></td>
+                <td><span class="status pending">Pending Review</span></td>
+                <td class="row-actions">
+                  <button type="button" data-action="view">View</button>
+                  <button type="button" data-action="edit">Edit</button>
+                  <button type="button" data-action="download">Download</button>
+                  <button type="button" data-action="delete">Delete</button>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="5">
+                  <div class="pagination" data-pager="ebooks" aria-label="E-Books pagination">
+                    <button type="button" disabled data-page="prev">Prev</button>
+                    <span data-page="info">Page 1 of 1</span>
+                    <button type="button" disabled data-page="next">Next</button>
+                  </div>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+          <div class="empty" hidden data-empty="ebooks">
+            <p>No e-books found.</p>
+            <button type="button" data-action="clear-filters" data-target="ebooks">Clear filters</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+  </div>
+<!-- ===== Modal ===== -->
+<div id="customModal" class="modal">
+  <div class="modal-content">
+    <span id="closeModal" class="modal-close">&times;</span>
+    <h2 id="modalTitle">Modal Title</h2>
+    <div id="modalBody">
+      <p>Action content goes here…</p>
+    </div>
+    <div class="modal-footer">
+      <button id="modalCancel">Cancel</button>
+      <button id="modalConfirm">OK</button>
+    </div>
+  </div>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,153 @@
+
+:root{
+  --bg:#0f172a;
+  --bg-soft:#111827;
+  --card:#0b1220;
+  --muted:#94a3b8;
+  --text:#000000;
+  --primary:#6366f1;
+  --accent:#22d3ee;
+  --success:#10b981;
+  --warning:#f59e0b;
+  --danger:#ef4444;
+  --shadow:0 10px 25px rgba(0,0,0,.35);
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+  background: linear-gradient(135deg, #ffffff 0%, #ffffffff 100%);
+  color:var(--text);
+}
+
+
+/* Search box */
+.search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 260px;
+  transition: width 0.3s ease;
+}
+
+.search input {
+  width: 100%;
+  padding: 10px 14px 10px 38px; /* left space for icon */
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  background: #f9fafb;
+  font-size: 14px;
+  color: #333;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.search input::placeholder {
+  color: #888;
+  font-size: 14px;
+}
+
+.search input:focus {
+  border-color: var(--primary);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+/* Search icon */
+.search::before {
+  content: "";
+  position: absolute;
+  left: 12px;
+  font-size: 16px;
+  color: #777;
+  pointer-events: none;
+} 
+
+/* ===== Topbar ===== */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #ffffff;
+  padding: 10px 20px;
+  border-bottom: 1px solid #e5e7eb;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* Sidebar toggle button */
+.sidebar-toggle {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.sidebar-toggle:hover {
+  background: #1d4ed8;
+}
+
+/* Title inside topbar */
+.topbar-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #1f2937;
+  flex-grow: 1;
+  padding-left: 15px;
+}
+
+/* Actions area (icons, search, profile, etc.) */
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* Sidebar */
+.sidebar {
+  grid-area: sidebar;
+  background: #fff;
+  border-right: 1px solid #e5e7eb;
+  height: 100vh;
+  padding: 0; /* remove inner gap */
+  transition: all 0.3s ease;
+  overflow-y: auto;
+  width: 260px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Sidebar collapse */
+.sidebar {
+  transition: width 0.3s ease, padding 0.3s ease;
+}
+
+.layout {
+  display: grid;
+
+  grid-template-rows: 60px 1fr;
+  grid-template-areas: "sidebar topbar" "sidebar main";
+  height: 100vh;
+  transition: grid-template-columns 0.3s ease;
+}
+
+/* When collapsed → sidebar disappears */
+.layout.sidebar-collapsed {
+  grid-template-columns: 0 1fr;
+}
+
+.sidebar.collapsed {
+  width: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+

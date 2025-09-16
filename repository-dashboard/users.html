@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Users • Repository Admin</title>
+  <link rel="stylesheet" href="style.css"/>
+   <link rel="stylesheet" href="style-content.css"/>
+  <link rel="stylesheet" href="users.css"/>
+  <defer src="users.js"></script>  
+  <script defer src="script.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo"></div>
+        <div>
+          <div class="title">Repository Admin</div>
+          <div class="small">Digital Repository Dashboard</div>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <div id="nav-overview" class="nav-item">
+          <div class="nav-left">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M3 12l2-2 4 4 8-8 4 4" stroke-width="2"/>
+            </svg>
+            <a href="index.html">Overview</a>
+          </div>
+        </div>
+
+        <button id="nav-users" class="nav-item" data-toggle="submenu" data-target="sub-users">
+          <div class="nav-left">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <circle cx="8" cy="8" r="3" stroke-width="2"/>
+              <circle cx="16" cy="16" r="3" stroke-width="2"/>
+              <path d="M1 21c0-3.5 3.5-6 7-6" stroke-width="2"/>
+              <path d="M23 21c0-3.5-3.5-6-7-6" stroke-width="2"/>
+            </svg>
+            <span>Users</span>
+          </div>
+          <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 18l6-6-6-6" stroke-width="2"/></svg>
+        </button>
+        <div id="sub-users" class="submenu">
+          <a href="users.html#admin">• Admin</a>
+          <a href="users.html#faculty">• Faculty</a>
+          <a href="users.html#student">• Student</a>
+          <a href="users.html#staff">• Staff</a>
+        </div>
+
+        <button id="nav-materials" class="nav-item" data-toggle="submenu" data-target="sub-materials">
+          <div class="nav-left">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <rect x="3" y="4" width="18" height="14" rx="2" stroke-width="2"/>
+              <path d="M7 8h10M7 12h6" stroke-width="2"/>
+            </svg>
+            <span>Materials</span>
+          </div>
+          <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 18l6-6-6-6" stroke-width="2"/></svg>
+        </button>
+        <div id="sub-materials" class="submenu">
+          <a href="materials.html#research">• Research</a>
+          <a href="materials.html#unpublished">• Unpublish Documents</a>
+          <a href="materials.html#video">• Video</a>
+          <a href="materials.html#ebooks">• E-Books</a>
+        </div>
+
+        <button id="nav-submissions" class="nav-item" data-toggle="submenu" data-target="sub-submissions">
+          <div class="nav-left">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M12 3v12M5 10l7 7 7-7" stroke-width="2"/>
+            </svg>
+            <span>Submissions</span>
+          </div>
+          <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 18l6-6-6-6" stroke-width="2"/></svg>
+        </button>
+        <div id="sub-submissions" class="submenu">
+          <a href="submissions.html#student">• Student Submissions</a>
+          <a href="submissions.html#faculty">• Faculty Submissions</a>
+        </div>
+
+        <div id="nav-requests" class="nav-item">
+          <div class="nav-left">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M12 2l7 4v6c0 5-3.5 9-7 10-3.5-1-7-5-7-10V6l7-4z" stroke-width="2"/>
+              <path d="M12 8v4" stroke-width="2"/>
+            </svg>
+            <a href="requests.html">Access Requests</a>
+          </div>
+        </div>
+
+<!-- Master Data Menu -->
+<!-- Master Data Menu -->
+<button id="nav-masterdata" class="nav-item" data-toggle="submenu" data-target="sub-masterdata">
+  <div class="nav-left">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+      <path d="M4 6h16M4 12h16M4 18h16" stroke-width="2"/>
+    </svg>
+    <span>Master Data</span>
+  </div>
+  <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+    <path d="M9 18l6-6-6-6" stroke-width="2"/>
+  </svg>
+</button>
+
+<div id="sub-masterdata" class="submenu">
+  <!-- Direct links -->
+
+  
+
+  <!-- Academic dropdown -->
+  <button class="nav-item" data-toggle="submenu" data-target="sub-academic">
+    <div class="nav-left">
+      <span>Academic Management</span>
+    </div>
+    <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+      <path d="M9 18l6-6-6-6" stroke-width="2"/>
+    </svg>
+  </button>
+  <div id="sub-academic" class="submenu">
+    <a href="academic.html#College">• College</a>
+    <a href="academic.html#Course">• Course</a>
+  </div>
+
+  <!-- Material dropdown -->
+  <button class="nav-item" data-toggle="submenu" data-target="sub-material">
+    <div class="nav-left">
+      <span>Material Managemnt</span>
+    </div>
+    <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+      <path d="M9 18l6-6-6-6" stroke-width="2"/>
+    </svg>
+  </button>
+  <div id="sub-material" class="submenu">
+    <a href="materialmanagement.html#material">• Material</a>
+    <a href="materialmanagement.html#materialtype">• Material Type</a>
+  </div>
+
+ <button class="nav-item" data-toggle="submenu" data-target="sub-usermanagement">
+    <div class="nav-left">
+      <span>User Management</span>
+    </div>
+    <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+      <path d="M9 18l6-6-6-6" stroke-width="2"/>
+    </svg>
+  </button>
+  <div id="sub-usermanagement" class="submenu">
+  <a href="usermasterdata.html#user">• User</a>
+  <a href="usermasterdata.html#role">• Role</a>
+   </div>
+
+    <a href="penaltymasterdata.html#penalty">• Penalty Time</a>
+</div>
+
+
+      </nav>
+    </aside>
+
+    <header class="topbar">
+      <button id="toggleSidebar" class="sidebar-toggle">
+    ☰
+  </button>
+      <div class="search">
+        <input type="text" placeholder="Search... (static demo)" />
+      </div>
+      <div class="actions">
+        <div class="icon-btn" id="notifBtn" title="Notifications" style="position:relative">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M18 8a6 6 0 00-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9" stroke-width="2"/>
+            <path d="M13.73 21a2 2 0 01-3.46 0" stroke-width="2"/>
+          </svg>
+          <span class="badge">3</span>
+        </div>
+        <div class="dropdown" id="notifMenu">
+          <div><strong>New:</strong> 1 pending request</div>
+          <div>Submission S001 requires review</div>
+          <div>System maintenance on Aug 30</div>
+        </div>
+
+        <div class="icon-btn" id="accountBtn" title="Account" style="position:relative">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <circle cx="12" cy="8" r="4" stroke-width="2"/>
+            <path d="M4 22c0-4 4-6 8-6s8 2 8 6" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="dropdown" id="accountMenu">
+          <a href="#">Profile</a>
+          <a href="#">Settings</a>
+          <a href="#">Logout</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="main">
+
+
+    <!-- ===== ADMIN ===== -->
+    <section id="admin" class="section is-active" role="tabpanel" aria-labelledby="tab-admin" data-section="admin">
+      <div class="card">
+        <header class="card-head">
+          <h2>Admin Users</h2>
+          <form class="controls" data-controls="admin">
+            <input type="search" placeholder="Search name, email…" aria-label="Search admin users">
+            <select name="role">
+              <option value="">All Roles</option>
+              <option>Super Admin</option>
+              <option>Moderator</option>
+            </select>
+            <button type="button" data-action="export" data-target="admin">Export CSV</button>
+          </form>
+        </header>
+
+        <div class="table-wrap">
+          <table class="table" data-table="admin">
+            <thead>
+              <tr>
+                <th>Admin ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Date Added</th>
+                <th class="col-actions">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>AD001</td>
+                <td>Maria </td>
+                <td>Santos</td>
+                <td>maria@school.edu</td>
+                <td>Super Admin</td>
+                <td><time datetime="2024-05-01">May 1, 2024</time></td>
+                <td class="row-actions">
+                  <button data-action="view">View</button>
+                  <button data-action="edit">Edit</button>
+                  <button data-action="delete">Delete</button>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="5">
+                  <div class="pagination" data-pager="admin">
+                    <button disabled data-page="prev">Prev</button>
+                    <span data-page="info">Page 1 of 1</span>
+                    <button disabled data-page="next">Next</button>
+                  </div>
+                </td>
+              </tr>
+            </tfoot>
+            
+          </table>
+          <div class="empty" hidden data-empty="admin">
+            <p>No admin users found.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== FACULTY ===== -->
+    <section id="faculty" class="section" role="tabpanel" aria-labelledby="tab-faculty" data-section="faculty">
+      <div class="card">
+        <header class="card-head">
+          <h2>Faculty Users</h2>
+          <form class="controls" data-controls="faculty">
+            <input type="search" placeholder="Search name, department…" aria-label="Search faculty">
+            <select name="dept">
+              <option value="">All Departments</option>
+              <option>Engineering</option>
+              <option>Science</option>
+              <option>Arts</option>
+            </select>
+            <button type="button" data-action="export" data-target="faculty">Export CSV</button>
+          </form>
+        </header>
+
+        <div class="table-wrap">
+          <table class="table" data-table="faculty">
+            <thead>
+              <tr>
+                <th>Faculty ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Department</th>
+                <th>Date Joined</th>
+                <th class="col-actions">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>FA001</td>
+                <td>Juan</td>
+                <td>Dela Cruz</td>
+                <td>juan@school.edu</td>
+                <td>Engineering</td>
+                <td><time datetime="2023-08-10">Aug 10, 2023</time></td>
+                <td class="row-actions">
+                  <button data-action="view">View</button>
+                  <button data-action="edit">Edit</button>
+                  <button data-action="delete">Delete</button>
+
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="5">
+                  <div class="pagination" data-pager="unpublished" aria-label="Unpublished pagination">
+                    <button type="button" disabled data-page="prev">Prev</button>
+                    <span data-page="info">Page 1 of 1</span>
+                    <button type="button" disabled data-page="next">Next</button>
+                  </div>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== STUDENT ===== -->
+    <section id="student" class="section" role="tabpanel" aria-labelledby="tab-student" data-section="student">
+      <div class="card">
+        <header class="card-head">
+          <h2>Student Users</h2>
+          <form class="controls" data-controls="student">
+            <input type="search" placeholder="Search name, ID…" aria-label="Search students">
+            <select name="year">
+              <option value="">All Years</option>
+              <option>1st Year</option>
+              <option>2nd Year</option>
+              <option>3rd Year</option>
+              <option>4th Year</option>
+            </select>
+            <button type="button" data-action="export" data-target="student">Export CSV</button>
+          </form>
+        </header>
+
+        <div class="table-wrap">
+          <table class="table" data-table="student">
+            <thead>
+              <tr>
+                <th>Student ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Year</th>
+                <th>Date Joined</th>
+                <th class="col-actions">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>ST001</td>
+                <td>Ana</td>
+                <td>Lopez</td>
+                <td>ana@student.edu</td>
+                <td>3rd Year</td>
+                <td><time datetime="2024-01-15">Jan 15, 2024</time></td>
+                <td class="row-actions">
+                  <button data-action="view">View</button>
+                  <button data-action="edit">Edit</button>
+                  <button data-action="delete">Delete</button>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="5">
+                  <div class="pagination" data-pager="unpublished" aria-label="Unpublished pagination">
+                    <button type="button" disabled data-page="prev">Prev</button>
+                    <span data-page="info">Page 1 of 1</span>
+                    <button type="button" disabled data-page="next">Next</button>
+                  </div>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== STAFF ===== -->
+    <section id="staff" class="section" role="tabpanel" aria-labelledby="tab-staff" data-section="staff">
+      <div class="card">
+        <header class="card-head">
+          <h2>Staff Users</h2>
+          <form class="controls" data-controls="staff">
+            <input type="search" placeholder="Search name, position…" aria-label="Search staff">
+            <select name="position">
+              <option value="">All Positions</option>
+              <option>Clerk</option>
+              <option>Technician</option>
+            </select>
+            <button type="button" data-action="export" data-target="staff">Export CSV</button>
+          </form>
+        </header>
+
+        <div class="table-wrap">
+          <table class="table" data-table="staff">
+            <thead>
+              <tr>
+                <th>Student ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Position</th>
+                <th>Date Hired</th>
+                <th class="col-actions">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>ST002</td>
+                <td>mark</td>
+                <td>Tan</td>
+                <td>mark@school.edu</td>
+                <td>Technician</td>
+                <td><time datetime="2022-11-20">Nov 20, 2022</time></td>
+                <td class="row-actions">
+                  <button data-action="view">View</button>
+                  <button data-action="edit">Edit</button>
+                  <button data-action="delete">Delete</button>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="5">
+                  <div class="pagination" data-pager="unpublished" aria-label="Unpublished pagination">
+                    <button type="button" disabled data-page="prev">Prev</button>
+                    <span data-page="info">Page 1 of 1</span>
+                    <button type="button" disabled data-page="next">Next</button>
+                  </div>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+      
+    </section>
+  </main>
+
+<!-- ===== Modal ===== -->
+<!-- ===== Modal ===== -->
+<div id="userModal" class="modal">
+  <div class="modal-content">
+    <h3 id="modalTitle">Modal Title</h3>
+    <div id="modalBody"></div>
+    <div class="modal-buttons"></div>
+  </div>
+</div>
+
+
+
+</html>

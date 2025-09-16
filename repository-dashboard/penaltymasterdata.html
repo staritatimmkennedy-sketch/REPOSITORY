@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Overview • Repository Admin</title>
+  <link rel="stylesheet" href="style.css"/>
+    <link rel="stylesheet" href="style-content.css"/>
+         <link rel="stylesheet" href="style-masterdata.css"/>
+              <link rel="stylesheet" href="usermasterdata.css"/>
+         <link rel="stylesheet" href="style-modal.css"/>
+           <script defer src="penaltymasterdata.js"></script> 
+  <script defer src="usermasterdata.js"></script> 
+  <script defer src="script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo"></div>
+        <div>
+          <div class="title">Repository Admin</div>
+          <div class="small">Digital Repository Dashboard</div>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <div id="nav-overview" class="nav-item">
+          <div class="nav-left">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M3 12l2-2 4 4 8-8 4 4" stroke-width="2"/>
+            </svg>
+            <a href="index.html">Overview</a>
+          </div>
+        </div>
+
+        <button id="nav-users" class="nav-item" data-toggle="submenu" data-target="sub-users">
+          <div class="nav-left">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <circle cx="8" cy="8" r="3" stroke-width="2"/>
+              <circle cx="16" cy="16" r="3" stroke-width="2"/>
+              <path d="M1 21c0-3.5 3.5-6 7-6" stroke-width="2"/>
+              <path d="M23 21c0-3.5-3.5-6-7-6" stroke-width="2"/>
+            </svg>
+            <span>Users</span>
+          </div>
+          <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 18l6-6-6-6" stroke-width="2"/></svg>
+        </button>
+        <div id="sub-users" class="submenu">
+          <a href="users.html#admin">• Admin</a>
+          <a href="users.html#faculty">• Faculty</a>
+          <a href="users.html#student">• Student</a>
+          <a href="users.html#staff">• Staff</a>
+        </div>
+
+        <button id="nav-materials" class="nav-item" data-toggle="submenu" data-target="sub-materials">
+          <div class="nav-left">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <rect x="3" y="4" width="18" height="14" rx="2" stroke-width="2"/>
+              <path d="M7 8h10M7 12h6" stroke-width="2"/>
+            </svg>
+            <span>Materials</span>
+          </div>
+          <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 18l6-6-6-6" stroke-width="2"/></svg>
+        </button>
+        <div id="sub-materials" class="submenu">
+          <a href="materials.html#research">• Research</a>
+          <a href="materials.html#unpublished">• Unpublish Documents</a>
+          <a href="materials.html#video">• Video</a>
+          <a href="materials.html#ebooks">• E-Books</a>
+        </div>
+
+        <button id="nav-submissions" class="nav-item" data-toggle="submenu" data-target="sub-submissions">
+          <div class="nav-left">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M12 3v12M5 10l7 7 7-7" stroke-width="2"/>
+            </svg>
+            <span>Submissions</span>
+          </div>
+          <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 18l6-6-6-6" stroke-width="2"/></svg>
+        </button>
+        <div id="sub-submissions" class="submenu">
+          <a href="submissions.html#student">• Student Submissions</a>
+          <a href="submissions.html#faculty">• Faculty Submissions</a>
+        </div>
+
+        <div id="nav-requests" class="nav-item">
+          <div class="nav-left">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M12 2l7 4v6c0 5-3.5 9-7 10-3.5-1-7-5-7-10V6l7-4z" stroke-width="2"/>
+              <path d="M12 8v4" stroke-width="2"/>
+            </svg>
+            <a href="requests.html">Access Requests</a>
+          </div>
+        </div>
+
+<!-- Master Data Menu -->
+<!-- Master Data Menu -->
+<button id="nav-masterdata" class="nav-item" data-toggle="submenu" data-target="sub-masterdata">
+  <div class="nav-left">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+      <path d="M4 6h16M4 12h16M4 18h16" stroke-width="2"/>
+    </svg>
+    <span>Master Data</span>
+  </div>
+  <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+    <path d="M9 18l6-6-6-6" stroke-width="2"/>
+  </svg>
+</button>
+
+<div id="sub-masterdata" class="submenu">
+  <!-- Direct links -->
+
+  
+
+  <!-- Academic dropdown -->
+  <button class="nav-item" data-toggle="submenu" data-target="sub-academic">
+    <div class="nav-left">
+      <span>Academic Management</span>
+    </div>
+    <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+      <path d="M9 18l6-6-6-6" stroke-width="2"/>
+    </svg>
+  </button>
+  <div id="sub-academic" class="submenu">
+    <a href="academic.html#College">• College</a>
+    <a href="academic.html#Course">• Course</a>
+  </div>
+
+  <!-- Material dropdown -->
+  <button class="nav-item" data-toggle="submenu" data-target="sub-material">
+    <div class="nav-left">
+      <span>Material Managemnt</span>
+    </div>
+    <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+      <path d="M9 18l6-6-6-6" stroke-width="2"/>
+    </svg>
+  </button>
+  <div id="sub-material" class="submenu">
+    <a href="materialmanagement.html#material">• Material</a>
+    <a href="materialmanagement.html#materialtype">• Material Type</a>
+  </div>
+
+ <button class="nav-item" data-toggle="submenu" data-target="sub-usermanagement">
+    <div class="nav-left">
+      <span>User Management</span>
+    </div>
+    <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+      <path d="M9 18l6-6-6-6" stroke-width="2"/>
+    </svg>
+  </button>
+  <div id="sub-usermanagement" class="submenu">
+  <a href="usermasterdata.html#user">• User</a>
+  <a href="usermasterdata.html#role">• Role</a>
+   </div>
+
+    <a href="penaltymasterdata.html#penalty">• Penalty Time</a>
+</div>
+
+
+      </nav>
+    </aside>
+
+    <header class="topbar">
+      <button id="toggleSidebar" class="sidebar-toggle">
+    ☰
+  </button>
+      <div class="search">
+        <input type="text" placeholder="Search... (static demo)" />
+      </div>
+      <div class="actions">
+        <div class="icon-btn" id="notifBtn" title="Notifications" style="position:relative">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M18 8a6 6 0 00-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9" stroke-width="2"/>
+            <path d="M13.73 21a2 2 0 01-3.46 0" stroke-width="2"/>
+          </svg>
+          <span class="badge">3</span>
+        </div>
+        <div class="dropdown" id="notifMenu">
+          <div><strong>New:</strong> 1 pending request</div>
+          <div>Submission S001 requires review</div>
+          <div>System maintenance on Aug 30</div>
+        </div>
+
+        <div class="icon-btn" id="accountBtn" title="Account" style="position:relative">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <circle cx="12" cy="8" r="4" stroke-width="2"/>
+            <path d="M4 22c0-4 4-6 8-6s8 2 8 6" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="dropdown" id="accountMenu">
+          <a href="#">Profile</a>
+          <a href="#">Settings</a>
+          <a href="#">Logout</a>
+        </div>
+      </div>
+    </header>
+
+
+   <main class="main">
+
+    <section id="penalty" class="section" role="tabpanel" data-section="penalty">
+  <div class="card">
+    <header class="master-tb">
+      <h2>Penalty Master Data</h2>
+      <div class="controls">
+        <input type="text" id="searchPenaltyInput" placeholder="Search penalty...">
+        <button id="addPenaltyBtn">Add Penalty</button>
+      </div>
+    </header>
+
+    <!-- Penalty Table -->
+    <table id="penaltyTable" class="master-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Penalty Name</th>
+          <th>Amount</th>
+          <th>Per Day Incurrence</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Sample Row -->
+        <tr>
+          <td>1</td>
+          <td>Late Return</td>
+          <td>50.00</td>
+          <td>5</td>
+          <td>
+            <button class="edit-btn">Edit</button>
+            <button class="delete-btn">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Add/Edit Modal -->
+<div class="modal" id="penaltyModal">
+  <div class="modal-content">
+    <h3 id="penaltyModalTitle">Add Penalty</h3>
+    <input type="text" id="penaltyNameInput" placeholder="Penalty Name">
+    <input type="text" id="penaltyAmountInput" placeholder="Amount">
+    <input type="text" id="perDayInput" placeholder="Per Day Incurrence (Optional)">
+    <div class="modal-buttons">
+      <button id="savePenaltyBtn">Save</button>
+      <button id="cancelPenaltyBtn">Cancel</button>
+    </div>
+  </div>
+</div>
+
+  
+</main>
+
+  </div>
+</body>
+</html>
