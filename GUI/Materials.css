@@ -1,0 +1,167 @@
+/* ===========================
+   General Layout
+=========================== */
+body { 
+  font-family: 'Segoe UI', sans-serif; 
+  margin: 0; 
+  background: #f4f6f9; 
+}
+.main { padding: 20px; }
+.page-title { margin-bottom: 10px; }
+
+/* ===========================
+   Materials Grid (YouTube-style)
+=========================== */
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  margin-top: 15px;
+}
+.video-card {
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+}
+.video-card:hover { transform: scale(1.02); }
+
+.thumbnail { 
+  position: relative; 
+  flex-shrink: 0;
+}
+.thumbnail img, .thumbnail video {
+  width: 100%;
+  display: block;
+  border-bottom: 1px solid #eee;
+  border-radius: 6px 6px 0 0;
+  object-fit: cover;
+}
+.status-badge { 
+  position: absolute; 
+  bottom: 8px; 
+  left: 8px; 
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+/* Status Colors */
+.status-badge.available { background: #22c55e; color: #fff; }
+.status-badge.borrowed  { background: #ef4444; color: #fff; }
+.status-badge.due       { background: #f59e0b; color: #fff; }
+.status-badge.returned  { background: #3b82f6; color: #fff; }
+.status-badge.pending   { background: #fbbf24; color: #fff; }
+.status-badge.approved  { background: #22c55e; color: #fff; }
+.status-badge.rejected  { background: #ef4444; color: #fff; }
+
+.info {
+  padding: 12px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.info h3 { 
+  margin: 5px 0; 
+  font-size: 16px; 
+  font-weight: 600; 
+}
+.info p  { 
+  color: #6b7280; 
+  margin: 0 0 10px 0; 
+  font-size: 14px;
+}
+
+/* ===========================
+   Buttons
+=========================== */
+.btn {
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-primary { background: #2563eb; color: #fff; }
+.btn-primary:hover { background: #1d4ed8; }
+
+.btn-view { background: #4caf50; color: #fff; }
+.btn-view:hover { background: #43a047; }
+
+.btn-disabled {
+  background: #d1d5db;
+  color: #6b7280;
+  cursor: not-allowed;
+}
+
+/* ===========================
+   Filters
+=========================== */
+.filters {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.filters select {
+  padding: 8px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #f3f4f6;
+  color: #393853;
+  font-size: 15px;
+  transition: border-color 0.2s;
+  outline: none;
+  min-width: 140px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.filters select:focus {
+  border-color: #6366f1;
+  background: #fff;
+}
+
+/* ===========================
+   Pagination
+=========================== */
+.pagination {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin: 24px 0;
+}
+.pagination button {
+  background: #f3f4f6;
+  border: 1px solid #d1d5db;
+  color: #393853;
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: background 0.2s;
+}
+.pagination button.active,
+.pagination button:hover {
+  background: #2563eb;
+  color: #fff;
+  border-color: #2563eb;
+}
+/* Remove default link underline and color inside cards */
+.video-card {
+  text-decoration: none;
+  color: inherit; /* use normal text color */
+}
+
+.video-card:hover {
+  text-decoration: none;
+  color: inherit;
+}
