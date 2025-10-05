@@ -25,10 +25,10 @@ $current = isset($currentPage) ? $currentPage : 'dashboard';
       <div class="text-gray-500 uppercase text-xs font-bold mb-2">System</div>
 
     <!--SYS ADMIN-->
-    <?php if ($role === "SysAdmin"): ?>
+    <?php if ($role === "Admin"): ?>
         <!-- Dashboard -->
-        <a href="index.php?page=dashboard"
-           class="cf-nav-item <?php echo ($current === 'dashboard') ? 'active' : ''; ?>">
+        <a href="index.php?page=deanDashboard"
+           class="cf-nav-item <?php echo ($current === 'deanDashboard') ? 'active' : ''; ?>">
            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
                 stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-3 flex-shrink-0">
              <path stroke-linecap="round" stroke-linejoin="round" 
@@ -379,7 +379,7 @@ $current = isset($currentPage) ? $currentPage : 'dashboard';
        </svg>
        Settings
     </a>
-    <a href="loginOne.php"
+    <a href="loginOne.html"
        class="cf-nav-item text-red-600 mt-2">
        <svg class="w-5 h-5 mr-3 flex-shrink-0" fill="none" 
             stroke="currentColor" viewBox="0 0 24 24">
