@@ -26,11 +26,6 @@
       </div>
 
       <div class="mb-3">
-        <label>Email <span class="text-red-500">*</span></label>
-        <input type="email" name="email" required class="w-full border rounded px-3 py-2" />
-      </div>
-
-      <div class="mb-3">
         <label>Role <span class="text-red-500">*</span></label>
         <select name="role" required class="w-full border rounded px-3 py-2">
           <option value="">Select Role</option>

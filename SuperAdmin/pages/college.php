@@ -1,83 +1,46 @@
 <?php
-// Dummy data for colleges
-$colleges = [
-  ["id" => "1", "name" => "College of Engineering, Architecture and Technology"],
-  ["id" => "2", "name" => "College of Health Sciences"],
-  ["id" => "3", "name" => "College of Education"],
-  ["id" => "4", "name" => "Business College"],
-  ["id" => "5", "name" => "College of Arts and Science"]
-];
+// pages/college.php
+
+require_once __DIR__ . '/../db.php';
+
+// Use $conn as defined in your db.php
+if (!isset($conn) || !($conn instanceof PDO)) {
+    // Optional: fallback to dummy data if DB fails (like your original)
+    $colleges = [
+        ["id" => "1", "name" => "College of Engineering, Architecture and Technology"],
+        ["id" => "2", "name" => "College of Health Sciences"],
+        ["id" => "3", "name" => "College of Arts and Science"],
+        ["id" => "4", "name" => "Business College"],
+        ["id" => "5", "name" => "College of Education"]
+    ];
+} else {
+    try {
+        // Fetch real colleges from DB
+        $stmt = $conn->query("SELECT college_id AS id, collegeName AS name FROM college ORDER BY college_id ASC");
+        $colleges = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        // If no colleges found, use dummy data as fallback
+        if (empty($colleges)) {
+            $colleges = [
+                ["id" => "1", "name" => "College of Engineering, Architecture and Technology"],
+                ["id" => "2", "name" => "College of Health Sciences"],
+                ["id" => "3", "name" => "College of Arts and Science"],
+                ["id" => "4", "name" => "Business College"],
+                ["id" => "5", "name" => "College of Education"]
+            ];
+        }
+    } catch (PDOException $e) {
+        error_log("College fetch error: " . $e->getMessage());
+        // Fallback to dummy data on query error
+        $colleges = [
+            ["id" => "1", "name" => "College of Engineering, Architecture and Technology"],
+            ["id" => "2", "name" => "College of Health Sciences"],
+            ["id" => "3", "name" => "College of Arts and Science"],
+            ["id" => "4", "name" => "Business College"],
+            ["id" => "5", "name" => "College of Education"]
+        ];
+    }
+}
+
+include 'college.html';
 ?>
-
-<div id="colleges" class="p-6">
-  <!-- Header Card -->
-  <div class="bg-white border rounded-lg p-4 mb-6 shadow-sm">
-    <div class="flex flex-col sm:flex-row sm:items-center gap-3">
-      <!-- Search -->
-      <input type="text" id="searchCollege" placeholder="Search by ID or name"
-             class="flex-grow px-4 py-2 border rounded-md text-sm focus:ring focus:ring-green-500 focus:outline-none">
-
-      <!-- Add College Button -->
-      <button id="openAddCollege"
-              class="flex items-center px-4 py-2 bg-green-600 text-white text-sm rounded-md hover:bg-green-700 whitespace-nowrap">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-             stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-        </svg>
-        Add College
-      </button>
-    </div>
-  </div>
-
-  <!-- Colleges Table -->
-  <div class="bg-white rounded-lg shadow overflow-hidden">
-    <table class="w-full border-collapse" id="collegeTable">
-      <thead class="bg-gray-100 border-b">
-        <tr>
-          <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">College ID</th>
-          <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">College Name</th>
-          <th class="px-4 py-3 text-center text-sm font-semibold text-gray-600">Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php foreach ($colleges as $c): ?>
-        <tr class="border-b hover:bg-gray-50"
-            data-id="<?= strtolower($c['id']) ?>"
-            data-name="<?= strtolower($c['name']) ?>">
-          <td class="px-4 py-3 text-sm"><?= htmlspecialchars($c["id"]) ?></td>
-          <td class="px-4 py-3 text-sm"><?= htmlspecialchars($c["name"]) ?></td>
-          <td class="px-4 py-3 text-center">
-            <div class="relative inline-block text-left">
-              <button class="w-24 px-3 py-1 bg-gray-200 border border-gray-400 text-sm rounded-md hover:bg-gray-300 focus:outline-none">Manage ▾</button>
-              <div class="hidden absolute right-0 mt-1 w-40 bg-white border rounded-md shadow-md z-10">
-                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100">Edit College</a>
-                <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Remove College</a>
-              </div>
-            </div>
-          </td>
-        </tr>
-        <?php endforeach; ?>
-      </tbody>
-    </table>
-  </div>
-</div>
-
-<script>
-  const searchCollege = document.getElementById("searchCollege");
-  const collegeRows = document.querySelectorAll("#collegeTable tbody tr");
-
-  searchCollege.addEventListener("input", () => {
-    const search = searchCollege.value.toLowerCase();
-    collegeRows.forEach(row => {
-      const matches = row.dataset.id.includes(search) || row.dataset.name.includes(search);
-      row.style.display = matches ? "" : "none";
-    });
-  });
-
-  document.querySelectorAll("#collegeTable button").forEach(button => {
-    button.addEventListener("click", () => {
-      const menu = button.parentElement.querySelector("div");
-      menu.classList.toggle("hidden");
-    });
-  });
-</script>

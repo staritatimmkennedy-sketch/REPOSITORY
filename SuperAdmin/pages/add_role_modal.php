@@ -8,42 +8,53 @@
       <!-- Role Name -->
       <div class="mb-3">
         <label class="block font-medium mb-1">Role Name <span class="text-red-500">*</span></label>
-        <input type="text" name="roleName" required 
-               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring focus:ring-green-500" />
+        <input type="text" name="role_name" required 
+               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring focus:ring-green-500 focus:outline-none" />
       </div>
 
       <!-- Description -->
       <div class="mb-3">
         <label class="block font-medium mb-1">Description</label>
         <textarea name="description" rows="3"
-                  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring focus:ring-green-500"></textarea>
+                  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring focus:ring-green-500 focus:outline-none"></textarea>
       </div>
 
       <!-- Permissions -->
       <div class="mb-3">
         <label class="block font-medium mb-1">Permissions</label>
-        <div class="flex flex-col gap-2">
-          <label><input type="checkbox" name="permissions" value="borrow_material"> Borrow Materials</label>
-          <label><input type="checkbox" name="permissions" value="return_material"> Return Materials</label>
-          <label><input type="checkbox" name="permissions" value="publish_material"> Publish Materials</label>
-          <label><input type="checkbox" name="permissions" value="approve_publish"> Approve Publishing</label>
-          <label><input type="checkbox" name="permissions" value="submit_material"> Submit Materials</label>
-          <label><input type="checkbox" name="permissions" value="approve_submission"> Approve Submissions</label>
-          <label><input type="checkbox" name="permissions" value="manage_users"> Manage Users</label>
-          <label><input type="checkbox" name="permissions" value="manage_roles"> Manage Roles</label>
-          <label><input type="checkbox" name="permissions" value="manage_courses"> Manage Colleges / Courses</label>
-          <label><input type="checkbox" name="permissions" value="manage_materials"> Manage Materials</label>
+        <div class="flex flex-col gap-2 mt-1">
+          <?php
+          // Optional: Define permissions once (you can also hardcode as below)
+          $allPermissions = [
+            'borrow_material' => 'Borrow Materials',
+            'return_material' => 'Return Materials',
+            'publish_material' => 'Publish Materials',
+            'approve_publish' => 'Approve Publishing',
+            'submit_material' => 'Submit Materials',
+            'approve_submission' => 'Approve Submissions',
+            'manage_users' => 'Manage Users',
+            'manage_roles' => 'Manage Roles',
+            'manage_courses' => 'Manage Colleges / Courses',
+            'manage_materials' => 'Manage Materials'
+          ];
+          foreach ($allPermissions as $value => $label): ?>
+            <label class="flex items-start">
+              <input type="checkbox" name="permissions[]" value="<?= htmlspecialchars($value) ?>" 
+                     class="mt-1 mr-2">
+              <span><?= htmlspecialchars($label) ?></span>
+            </label>
+          <?php endforeach; ?>
         </div>
       </div>
 
       <!-- Actions -->
       <div class="flex justify-end space-x-2 mt-4">
         <button type="button" id="cancelAddRole" 
-                class="cf-button bg-gray-300 text-gray-700 px-4 py-2 rounded-md">
+                class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition">
           Cancel
         </button>
         <button type="submit" 
-                class="cf-button bg-green-600 text-white px-4 py-2 rounded-md">
+                class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition">
           Add Role
         </button>
       </div>

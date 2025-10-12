@@ -1,28 +1,56 @@
-<!-- Add Material Type Modal -->
-<div id="addMaterialTypeModal" 
-     class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden opacity-0 transition-opacity duration-300">
-  <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
-    <h2 class="text-lg font-bold mb-4">Add Material Type</h2>
+<?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-    <form id="addMaterialTypeForm">
-      <div class="mb-3">
-        <label>Type Name <span class="text-red-500">*</span></label>
-        <input type="text" name="materialTypeName" required 
-               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring focus:ring-green-500" />
-      </div>
+header('Content-Type: application/json');
 
-      <div class="mb-3">
-        <label>Description</label>
-        <textarea name="materialTypeDescription" rows="3"
-                  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring focus:ring-green-500"></textarea>
-      </div>
+require_once __DIR__ . '/../db.php';
 
-      <div class="flex justify-end space-x-2 mt-4">
-        <button type="button" id="closeAddMaterialType"
-                class="px-4 py-2 border rounded-md">Cancel</button>
-        <button type="submit"
-                class="px-4 py-2 bg-green-600 text-white rounded-md">Save</button>
-      </div>
-    </form>
-  </div>
-</div>
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    http_response_code(405);
+    echo json_encode(['success' => false, 'message' => 'Method not allowed']);
+    exit;
+}
+
+$name = trim($_POST['materialTypeName'] ?? '');
+$description = trim($_POST['materialTypeDescription'] ?? '');
+
+if (empty($name)) {
+    echo json_encode(['success' => false, 'message' => 'Material type name is required']);
+    exit;
+}
+
+try {
+    $stmt = $conn->query("SELECT materialType_id FROM material_type ORDER BY materialType_id DESC LIMIT 1");
+    $lastId = $stmt->fetchColumn();
+
+    if ($lastId && preg_match('/^MT(\d+)$/', $lastId, $matches)) {
+        $number = intval($matches[1]) + 1;
+        $newId = 'MT' . str_pad($number, 3, '0', STR_PAD_LEFT);
+    } else {
+        $newId = 'MT001';
+    }
+    $stmt = $conn->prepare("
+        INSERT INTO material_type (materialType_id, materialTypeName, materialTypeDescription) 
+        VALUES (?, ?, ?)
+    ");
+    $result = $stmt->execute([$newId, $name, $description ?: null]);
+    if ($result) {
+        echo json_encode([
+            'success' => true,
+            'materialType' => [
+                'id' => $newId,
+                'name' => $name,
+                'desc' => $description
+            ]
+        ]);
+    } else {
+        $err = $stmt->errorInfo();
+        error_log("Insert failed: " . print_r($err, true));
+        echo json_encode(['success' => false, 'message' => 'Database insert failed: ' . $err[2]]);
+    }
+} catch (PDOException $e) {
+    error_log("Exception: " . $e->getMessage());
+    echo json_encode(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
+}

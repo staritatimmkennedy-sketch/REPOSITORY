@@ -43,36 +43,8 @@ if (!isset($pageTitles[$currentPage]) || !file_exists($contentFile)) {
 
 // 5. Get the final page title for the header
 $pageTitle = $pageTitles[$currentPage];
+
+//index html
+include 'index.html'
+
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $pageTitle; ?> | Admin Panel</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="/SuperAdmin/style.css">
-
-</head>
-<body class="flex min-h-screen text-gray-800">
-    <!-- Sidebar -->
-    <?php include __DIR__ . '/sidebar.php'; ?>
-
-    <!-- Main -->
-    <main class="flex-1 flex flex-col">
-        <!-- Header -->
-        <?php include __DIR__ . '/header.php'; ?>
-
-        <!-- Page Content -->
-        <div class="p-6">
-            <?php include $contentFile; ?>
-        </div>
-    </main>
-
-    <!-- Scripts -->
-    <script src="app.js"></script>
-    <!-- Course Modal -->
-    <?php include __DIR__ . '/pages/courseModal.php'; ?>
-    <?php include __DIR__ . '/pages/add_user_modal.php'; ?>
-</body>
-</html>

@@ -1,96 +1,38 @@
 <?php
-// Dummy data for material types
-$materialTypes = [
-  ["id" => "MT001", "name" => "Thesis", "desc" => "Comprehensive research study submitted by students."],
-  ["id" => "MT002", "name" => "Research Paper", "desc" => "Academic paper focused on a specific research problem."],
-  ["id" => "MT003", "name" => "Project", "desc" => "Practical or capstone projects developed by students."],
-  ["id" => "MT004", "name" => "Artwork", "desc" => "Creative visual works such as drawings, paintings, etc."],
-  ["id" => "MT005", "name" => "Case Study", "desc" => "In-depth analysis of a real-world scenario or problem."],
-  ["id" => "MT006", "name" => "Essay", "desc" => "Formal written composition on a chosen academic topic."],
-  ["id" => "MT007", "name" => "Dissertation", "desc" => "Extended research document, typically for graduate level."],
-  ["id" => "MT008", "name" => "Portfolio", "desc" => "Collection of works showcasing skills or achievements."]
-];
+// pages/materialType.php
+
+require_once __DIR__ . '/../db.php';
+
+$materialTypes = [];
+
+try {
+    if (isset($conn) && $conn instanceof PDO) {
+        $stmt = $conn->query("
+            SELECT 
+                materialType_id AS id,
+                materialTypeName AS name,
+                COALESCE(materialTypeDescription, '') AS `desc`
+            FROM material_type
+            ORDER BY materialType_id ASC
+        ");
+        
+        $materialTypes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+} catch (PDOException $e) {
+    error_log("Database error in materialType.php: " . $e->getMessage());
+}
+if (empty($materialTypes)) {
+    $materialTypes = [
+        ["id" => "MT001", "name" => "Thesis", "desc" => "Comprehensive research study submitted by students."],
+        ["id" => "MT002", "name" => "Research Paper", "desc" => "Academic paper focused on a specific research problem."],
+        ["id" => "MT003", "name" => "Project", "desc" => "Practical or capstone projects developed by students."],
+        ["id" => "MT004", "name" => "Artwork", "desc" => "Creative visual works such as drawings, paintings, etc."],
+        ["id" => "MT005", "name" => "Case Study", "desc" => "In-depth analysis of a real-world scenario or problem."],
+        ["id" => "MT006", "name" => "Essay", "desc" => "Formal written composition on a chosen academic topic."],
+        ["id" => "MT007", "name" => "Dissertation", "desc" => "Extended research document, typically for graduate level."],
+        ["id" => "MT008", "name" => "Portfolio", "desc" => "Collection of works showcasing skills or achievements."]
+    ];
+}
+
+include 'materialType.html';
 ?>
-
-<div id="material-types" class="p-6">
-  <!-- Header Card -->
-  <div class="bg-white border rounded-lg p-4 mb-6 shadow-sm">
-    <div class="flex flex-col sm:flex-row sm:items-center gap-3">
-      <!-- Search -->
-      <input type="text" id="searchType" placeholder="Search by ID, name, or description"
-             class="flex-grow px-4 py-2 border rounded-md text-sm focus:ring focus:ring-green-500 focus:outline-none">
-
-      <!-- Add Material Type Button -->
-      <button id="openAddMaterialType"
-              class="flex items-center px-4 py-2 bg-green-600 text-white text-sm rounded-md hover:bg-green-700 whitespace-nowrap">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-             stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-        </svg>
-        Add Material Type
-      </button>
-    </div>
-  </div>
-
-  <!-- Material Types Table -->
-  <div class="bg-white rounded-lg shadow overflow-hidden">
-    <table class="w-full border-collapse" id="materialTypesTable">
-      <thead class="bg-gray-100 border-b">
-        <tr>
-          <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">ID</th>
-          <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Material Type</th>
-          <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Description</th>
-          <th class="px-4 py-3 text-center text-sm font-semibold text-gray-600">Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php foreach ($materialTypes as $mt): ?>
-        <tr class="border-b hover:bg-gray-50"
-            data-id="<?= strtolower($mt['id']) ?>"
-            data-name="<?= strtolower($mt['name']) ?>"
-            data-desc="<?= strtolower($mt['desc']) ?>">
-          <td class="px-4 py-3 text-sm"><?= htmlspecialchars($mt["id"]) ?></td>
-          <td class="px-4 py-3 text-sm"><?= htmlspecialchars($mt["name"]) ?></td>
-          <td class="px-4 py-3 text-sm"><?= htmlspecialchars($mt["desc"]) ?></td>
-          <td class="px-4 py-3 text-center">
-            <div class="relative inline-block text-left">
-              <button class="w-24 text-center px-3 py-1 bg-gray-200 border border-gray-400 text-sm rounded-md hover:bg-gray-300 focus:outline-none whitespace-nowrap">Manage ▾</button>
-              <div class="hidden absolute right-0 mt-1 w-40 bg-white border rounded-md shadow-md z-10">
-                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100">Edit Type</a>
-                <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Remove Type</a>
-              </div>
-            </div>
-          </td>
-        </tr>
-        <?php endforeach; ?>
-      </tbody>
-    </table>
-  </div>
-</div>
-
-<!-- JS Filtering + Dropdown Toggle -->
-<script>
-  const searchType = document.getElementById("searchType");
-  const rows = document.querySelectorAll("#materialTypesTable tbody tr");
-
-  function filterTypes() {
-    const search = searchType.value.toLowerCase();
-    rows.forEach(row => {
-      const matches = 
-        row.dataset.id.includes(search) ||
-        row.dataset.name.includes(search) ||
-        row.dataset.desc.includes(search);
-      row.style.display = matches ? "" : "none";
-    });
-  }
-
-  searchType.addEventListener("input", filterTypes);
-
-  // Toggle Manage dropdowns
-  document.querySelectorAll("#materialTypesTable button").forEach(button => {
-    button.addEventListener("click", () => {
-      const menu = button.parentElement.querySelector("div");
-      menu.classList.toggle("hidden");
-    });
-  });
-</script>
