@@ -13,22 +13,11 @@ function initializeCourseForm() {
 
     console.log('Initializing course form handler');
 
-    // Replace form to remove any existing listeners
+    // Remove any existing submit handlers to prevent duplicates
     const newForm = form.cloneNode(true);
     form.parentNode.replaceChild(newForm, form);
 
-    // Change submit button to regular button to prevent default form submission
-    const submitBtn = newForm.querySelector('button[type="submit"]');
-    if (submitBtn) {
-        submitBtn.type = 'button';
-    }
-
-    // Add click handler to the button
-    if (submitBtn) {
-        submitBtn.addEventListener('click', handleSaveCourse);
-    }
-
-    // Also handle form submit event as a safety measure
+    // Add submit handler to the new form
     newForm.addEventListener('submit', function(e) {
         e.preventDefault();
         handleSaveCourse();
@@ -47,17 +36,18 @@ function handleSaveCourse() {
 
     // Validation
     if (!courseName) {
-        showMessage('Course name is required', 'error');
+        showToast('Course name is required', 'error');
         return;
     }
     if (!collegeId) {
-        showMessage('Please select a college', 'error');
+        showToast('Please select a college', 'error');
         return;
     }
 
     // Get submit button and show loading state
-    const submitBtn = document.querySelector('#course-form button[type="button"]');
+    const submitBtn = document.querySelector('#course-form button[type="submit"]');
     const originalText = submitBtn.innerHTML;
+    submitBtn.disabled = true;
     submitBtn.innerHTML = `
         <svg class="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -65,7 +55,6 @@ function handleSaveCourse() {
         </svg>
         Saving...
     `;
-    submitBtn.disabled = true;
 
     // Prepare data
     const formData = new FormData();
@@ -87,20 +76,20 @@ function handleSaveCourse() {
     .then(data => {
         console.log('Response:', data);
         if (data.success) {
-            showMessage('Course added successfully!', 'success');
+            showToast('Course added successfully!', 'success');
             closeModalAndRefresh();
         } else {
-            showMessage(data.message || 'Error adding course', 'error');
+            showToast(data.message || 'Error adding course', 'error');
         }
     })
     .catch(error => {
         console.error('Error:', error);
-        showMessage('Network error: ' + error.message, 'error');
+        showToast('Network error: ' + error.message, 'error');
     })
     .finally(() => {
         // Restore button
-        submitBtn.innerHTML = originalText;
         submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
     });
 }
 
@@ -160,54 +149,4 @@ function closeModalAndRefresh() {
     setTimeout(() => {
         window.location.reload();
     }, 1500);
-}
-
-function showMessage(message, type = 'info') {
-    const container = document.getElementById('custom-message-container');
-    if (!container) {
-        // Fallback to alert if container not found
-        alert(message);
-        return;
-    }
-
-    const alertDiv = document.createElement('div');
-    
-    let classes = "p-4 rounded-lg shadow-lg mb-3 flex items-center transition-all duration-300 transform translate-x-full opacity-0";
-    
-    if (type === 'success') {
-        classes += " bg-green-500 text-white";
-    } else if (type === 'error') {
-        classes += " bg-red-500 text-white";
-    } else {
-        classes += " bg-blue-500 text-white";
-    }
-
-    alertDiv.className = classes;
-    alertDiv.innerHTML = `
-        <svg class="w-6 h-6 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${type === 'success' ? 'M5 13l4 4L19 7' : 'M13 10V3L4 14h7v7l9-11h-7z'}"></path>
-        </svg>
-        <span class="break-words">${message}</span>
-    `;
-    
-    container.appendChild(alertDiv);
-
-    // Animate in
-    requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-            alertDiv.classList.remove('translate-x-full', 'opacity-0');
-            alertDiv.classList.add('translate-x-0', 'opacity-100');
-        });
-    });
-
-    // Auto remove after 5 seconds
-    setTimeout(() => {
-        alertDiv.classList.remove('translate-x-0', 'opacity-100');
-        alertDiv.classList.add('translate-x-full', 'opacity-0');
-        setTimeout(() => {
-            if (alertDiv.parentNode === container) {
-                container.removeChild(alertDiv);
-            }
-        }, 300);
-    }, 5000);
 }

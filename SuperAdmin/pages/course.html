@@ -44,18 +44,26 @@
             <tr class="border-b hover:bg-gray-50"
                 data-id="<?= htmlspecialchars(strtolower($c['id'] ?? ''), ENT_QUOTES, 'UTF-8') ?>"
                 data-name="<?= htmlspecialchars(strtolower($c['name'] ?? ''), ENT_QUOTES, 'UTF-8') ?>"
-                data-college="<?= htmlspecialchars(strtolower($c['college'] ?? ''), ENT_QUOTES, 'UTF-8') ?>">
+                data-college="<?= htmlspecialchars(strtolower($c['college'] ?? ''), ENT_QUOTES, 'UTF-8') ?>"
+                id="course-row-<?= htmlspecialchars($c['id'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
               <td class="px-4 py-3 text-sm"><?= htmlspecialchars($c["id"] ?? '—', ENT_QUOTES, 'UTF-8') ?></td>
               <td class="px-4 py-3 text-sm"><?= htmlspecialchars($c["name"] ?? '—', ENT_QUOTES, 'UTF-8') ?></td>
               <td class="px-4 py-3 text-sm"><?= htmlspecialchars($c["college"] ?? '—', ENT_QUOTES, 'UTF-8') ?></td>
               <td class="px-4 py-3 text-center">
-                <div class="relative inline-block text-left">
-                  <button type="button" class="w-24 text-center px-3 py-1 bg-gray-200 border border-gray-400 text-sm rounded-md hover:bg-gray-300 focus:outline-none whitespace-nowrap">
+                <div class="relative inline-block text-left dropdown-container">
+                  <button type="button" class="manage-btn w-24 px-3 py-1 bg-gray-200 border border-gray-400 text-sm rounded-md hover:bg-gray-300 focus:outline-none whitespace-nowrap">
                     Manage ▾
                   </button>
-                  <div class="dropdown-menu hidden absolute right-0 mt-1 w-40 bg-white border rounded-md shadow-md z-50">
-                    <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100">Edit Course</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Remove Course</a>
+                  <div class="manage-dropdown hidden absolute right-0 mt-1 w-40 bg-white border rounded-md shadow-md z-10">
+                    <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 view-course-btn"
+                       data-course-id="<?= htmlspecialchars($c['id'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
+                       data-course-name="<?= htmlspecialchars($c['name'] ?? '', ENT_QUOTES, 'UTF-8') ?>">View Course</a>
+                    <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 edit-course-btn"
+                       data-course-id="<?= htmlspecialchars($c['id'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
+                       data-course-name="<?= htmlspecialchars($c['name'] ?? '', ENT_QUOTES, 'UTF-8') ?>">Update Course</a>
+                    <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 delete-course-btn"
+                       data-course-id="<?= htmlspecialchars($c['id'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
+                       data-course-name="<?= htmlspecialchars($c['name'] ?? '', ENT_QUOTES, 'UTF-8') ?>">Delete Course</a>
                   </div>
                 </div>
               </td>
@@ -71,6 +79,13 @@
   </div>
 </div>
 
+<!-- Include all modals -->
+<?php include 'add_course_modal.php'; ?>
+<?php include 'edit_course_modal.php'; ?>
+<?php include 'delete_course_modal.php'; ?>
+
+<!-- Message Container -->
+<div id="custom-message-container" class="fixed top-5 left-1/2 transform -translate-x-1/2 z-50 text-center"></div>
+
 <link rel="stylesheet" href="pages/course.css">
 <script src="pages/course.js"></script>
-<!-- REMOVED: Modal inclusion since it's now in index.html -->

@@ -32,22 +32,76 @@ function toggleModal(modalId, show) {
                 modal.removeEventListener('click', modal.__backdropHandler);
                 delete modal.__backdropHandler;
             }
+            // Only remove overflow-hidden if no other modals are open
+            if (document.querySelectorAll('[id$="Modal"]:not(.hidden), [id^="modal-"]:not(.hidden)').length <= 1) {
+                document.body.classList.remove('overflow-hidden');
+            }
             modal.removeEventListener('transitionend', onEnd);
         };
         modal.addEventListener('transitionend', onEnd, { once: true });
 
+        // Fallback timeout in case transitionend fails
         setTimeout(() => {
             if (!modal.classList.contains('hidden')) {
                 modal.classList.add('hidden');
-                if (modal.__backdropHandler) {
-                    modal.removeEventListener('click', modal.__backdropHandler);
-                    delete modal.__backdropHandler;
-                }
+                document.body.classList.remove('overflow-hidden');
             }
         }, 350);
-
-        document.body.classList.remove('overflow-hidden');
     }
+}
+
+/**
+ * Shows a toast notification at the top of the screen.
+ * @param {string} message - The message to display.
+ * @param {'success'|'error'} type - The type of notification.
+ */
+function showToast(message, type = 'success') {
+    const toastContainer = document.getElementById('toast-container');
+    if (!toastContainer) return;
+
+    // Base classes for the toast
+    let baseClasses = 'px-4 py-3 rounded-md shadow-lg font-medium text-white transition-all duration-300 ease-in-out transform';
+    let typeClasses = '';
+
+    if (type === 'success') {
+        typeClasses = 'bg-green-600 border border-green-700';
+    } else if (type === 'error') {
+        typeClasses = 'bg-red-600 border border-red-700';
+    } else {
+        typeClasses = 'bg-gray-700 border border-gray-800'; // Default neutral
+    }
+
+    const toast = document.createElement('div');
+    toast.className = baseClasses + ' ' + typeClasses + ' translate-y-[-150%] opacity-0';
+    toast.textContent = message;
+
+    // Add to container
+    toastContainer.appendChild(toast);
+
+    // 1. Show: animate it in
+    setTimeout(() => {
+        toast.classList.remove('translate-y-[-150%]', 'opacity-0');
+        toast.classList.add('translate-y-0', 'opacity-100');
+    }, 50);
+
+    // 2. Hide: animate it out after 4 seconds
+    const hideTimeout = setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-[-150%]', 'opacity-0');
+
+        // 3. Remove from DOM after transition
+        setTimeout(() => {
+            toast.remove();
+        }, 300);
+    }, 4000);
+
+    // Allow clicking to dismiss
+    toast.addEventListener('click', () => {
+        clearTimeout(hideTimeout);
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-[-150%]', 'opacity-0');
+        setTimeout(() => toast.remove(), 300);
+    });
 }
 
 // --- SIDEBAR DROPDOWNS ---
@@ -71,7 +125,7 @@ function attachManageDropdownListeners() {
     document.querySelectorAll('.manage-btn').forEach((btn) => {
         btn.addEventListener('click', (e) => {
             e.stopPropagation();
-            const dropdown = btn.querySelector('.manage-dropdown');
+            const dropdown = btn.closest('.relative')?.querySelector('.manage-dropdown');
             if (!dropdown) return;
 
             const willOpen = dropdown.classList.contains('hidden');
@@ -110,6 +164,12 @@ function showPage(pageKey, clickedLink) {
 
 // --- INITIALIZATION ---
 document.addEventListener('DOMContentLoaded', () => {
+    // Inject the toast container into the body
+    const toastContainer = document.createElement('div');
+    toastContainer.id = 'toast-container';
+    toastContainer.className = 'fixed top-0 inset-x-0 p-4 flex flex-col items-center space-y-2 z-[1000] pointer-events-none';
+    document.body.appendChild(toastContainer);
+
     // Sidebar dropdowns
     toggleDropdown('users-toggle', 'users-dropdown', 'users-arrow');
     toggleDropdown('materials-toggle', 'materials-dropdown', 'materials-arrow');
@@ -127,12 +187,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ---------- MODALS ----------
 
+    // In your app.js, update the modalConfigs array:
     const modalConfigs = [
         { open: 'openAddUser', modal: 'addUserModal', cancel: 'cancelAddUser', form: 'addUserForm' },
         { open: 'openAddRole', modal: 'addRoleModal', cancel: 'cancelAddRole', form: 'addRoleForm' },
         { open: 'openAddMaterial', modal: 'addMaterialModal', cancel: 'closeAddMaterial', form: 'addMaterialForm' },
         { open: 'openAddMaterialType', modal: 'addMaterialTypeModal', cancel: 'closeAddMaterialType', form: 'addMaterialTypeForm' },
         { open: 'openAddCollege', modal: 'modal-college', cancel: 'cancel-college-modal-btn', closeBtn: 'close-college-modal-btn', form: 'college-form' },
+
+        // Add the role modals here
+        { modal: 'updateRoleModal', cancel: 'cancelUpdateRole', closeBtn: 'closeUpdateRoleModal', form: 'updateRoleForm', customHandler: true },
+        { modal: 'deleteRoleModal', cancel: 'cancelDeleteRole', closeBtn: 'closeDeleteRoleModal', form: 'deleteRoleForm', customHandler: true },
+
+        // Other existing modals...
+        { modal: 'manageUserModal', cancel: 'cancelManageUser', form: 'manageUserForm', customHandler: true },
+        { modal: 'deleteUserModal', cancel: 'cancelDeleteUser', form: 'deleteUserForm', customHandler: true },
+
+        { modal: 'updateMaterialTypeModal', cancel: 'cancelUpdateMaterialType', form: 'updateMaterialTypeForm', customHandler: true},
+        { modal: 'deleteMaterialTypeModal', cancel: 'cancelDeleteMaterialType', form: 'deleteMaterialTypeForm', customHandler: true},
+
+        { modal: 'editCollegeModal', cancel: 'cancel-edit-college-modal-btn', form: 'edit-college-form', customHandler: true},
+        { modal: 'deleteCollegeModal', cancel: 'cancelDeleteCollege', form: 'deleteCollegeForm', customHandler: true},
+
+        { modal: 'editCourseModal', cancel: 'cancel-edit-course-modal-btn', form: 'edit-course-form', customHandler: true},
+        { modal: 'deleteCourseModal', cancel: 'cancelDeleteCourse', form: 'deleteCourseForm', customHandler: true},
     ];
 
     modalConfigs.forEach((cfg) => {
@@ -144,16 +222,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!modalEl) return;
 
+        // Attach OPEN button handler (only for modals with an explicit open button)
         if (openBtn) openBtn.addEventListener('click', () => {
             toggleModal(cfg.modal, true);
             formEl?.reset();
         });
 
+        // Attach CANCEL/CLOSE button handlers
         if (cancelBtn) cancelBtn.addEventListener('click', () => toggleModal(cfg.modal, false));
         if (closeBtn) closeBtn.addEventListener('click', () => toggleModal(cfg.modal, false));
 
         // Only add generic form handler for forms without custom handlers
-        if (formEl && !formEl.hasAttribute('data-custom-handler')) {
+        if (formEl && !cfg.customHandler && !formEl.hasAttribute('data-custom-handler')) {
             formEl.addEventListener('submit', (e) => {
                 e.preventDefault();
                 console.log(`${cfg.modal} submitted`);
@@ -174,12 +254,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Close all modals on ESC
     document.addEventListener('keydown', (e) => {
         if (e.key !== 'Escape') return;
-        const allModals = document.querySelectorAll('[id$="Modal"], [id^="modal-"]');
-        allModals.forEach((modal) => {
-            if (!modal.classList.contains('hidden')) {
-                const modalId = modal.id;
-                toggleModal(modalId, false);
-            }
-        });
+        const allModals = document.querySelectorAll('[id$="Modal"]:not(.hidden), [id^="modal-"]:not(.hidden)');
+        
+        // Find the topmost modal to close (last one opened)
+        const topmostModal = Array.from(allModals).pop();
+        
+        if (topmostModal) {
+            toggleModal(topmostModal.id, false);
+        }
     });
 });

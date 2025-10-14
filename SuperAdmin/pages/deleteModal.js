@@ -11,15 +11,20 @@ function openDeleteModal(itemData, itemType, onConfirmCallback) {
     const title = document.getElementById('delete-modal-title');
     const message = document.getElementById('delete-confirmation-message');
 
-    
     if (itemType === 'course') {
         title.textContent = 'Delete Course';
         message.textContent = `Are you sure you want to delete this course?`;
-  
     } else if (itemType === 'college') {
         title.textContent = 'Delete College';
         message.textContent = `Are you sure you want to delete this college?`;
-     
+    } else if (itemType === 'user') {
+        title.textContent = 'Delete User';
+        message.textContent = `Are you sure you want to delete user "${itemData.name}"?`;
+        // Update warning text for users
+        const warningText = document.getElementById('delete-warning-text');
+        if (warningText) {
+            warningText.textContent = 'This will permanently delete the user and all their related records. This action cannot be undone.';
+        }
     }
     
     // Open the modal

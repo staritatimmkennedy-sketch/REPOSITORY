@@ -42,13 +42,44 @@ try {
         (int)$yearLevel,
         (int)$courseId
     ]);
+    
+    // Fetch the result from the stored procedure
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    // Clear any remaining result sets
     do {
         $stmt->fetchAll();
     } while ($stmt->nextRowset());
 
     $conn->commit();
 
-    echo json_encode(['success' => true, 'message' => 'User added successfully!']);
+    // Check if the stored procedure was successful
+   // In the success section of add_user.php, replace with this:
+if ($result && isset($result['rowcount']) && $result['rowcount'] > 0) {
+    // The stored procedure was successful
+    // Fetch the newly created user_id using the username
+    $stmt = $conn->prepare("SELECT user_id FROM user WHERE username = ?");
+    $stmt->execute([$username]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    if ($user && isset($user['user_id'])) {
+        echo json_encode([
+            'success' => true, 
+            'message' => 'User added successfully!',
+            'user_id' => $user['user_id'] // Return the actual database user ID
+        ]);
+    } else {
+        // Fallback: return success but indicate we need to refresh
+        echo json_encode([
+            'success' => true, 
+            'message' => 'User added successfully! Please refresh to see changes.',
+            'user_id' => null
+        ]);
+    }
+} else {
+    $errorMessage = $result['message'] ?? 'Failed to add user. Username may already exist.';
+    echo json_encode(['success' => false, 'message' => $errorMessage]);
+}
 
 } catch (PDOException $e) {
     // Handle rollback safely if transaction is active

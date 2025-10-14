@@ -24,7 +24,7 @@ try {
             SELECT role_id, roleName AS role_name, 
                    COALESCE(description, '') AS description 
             FROM role 
-            ORDER BY role_id DESC
+            ORDER BY role_id ASC
         ");
         $roles = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -39,5 +39,23 @@ try {
 }
 
 $roleOptions = array_unique(array_column($roles, 'role_name'));
+
+// Define permissions for the modals
+$allPermissions = [
+    'borrow_material' => 'Borrow Materials',
+    'return_material' => 'Return Materials',
+    'publish_material' => 'Publish Materials',
+    'approve_publish' => 'Approve Publishing',
+    'submit_material' => 'Submit Materials',
+    'approve_submission' => 'Approve Submissions',
+    'manage_users' => 'Manage Users',
+    'manage_roles' => 'Manage Roles',
+    'manage_courses' => 'Manage Colleges / Courses',
+    'manage_materials' => 'Manage Materials'
+];
+
 include 'role.html';
+include 'add_role_modal.php';
+include 'update_role_modal.html';
+include 'delete_role_modal.html';
 ?>

@@ -92,17 +92,18 @@ if (!empty($users)) {
                 Manage ▾
               </button>
               <div class='hidden absolute right-0 mt-1 w-40 bg-white border rounded-md shadow-md z-10'>
-                <a href='#' class='block px-4 py-2 text-sm hover:bg-gray-100'>Update Account</a>
-                <a href='#' class='block px-4 py-2 text-sm hover:bg-gray-100'>Edit Username</a>
-                <a href='#' class='block px-4 py-2 text-sm hover:bg-gray-100'>Edit Password</a>
-                <a href='#' class='block px-4 py-2 text-sm text-red-600 hover:bg-gray-100'>Remove Account</a>
+                <a href='#view' class='block px-4 py-2 text-sm hover:bg-gray-100'>View User</a>
+                <a href='#edit' class='block px-4 py-2 text-sm hover:bg-gray-100'>Edit User</a>
+                <a href='#delete' class='block px-4 py-2 text-sm text-red-600 hover:bg-gray-100'>Delete User</a>
               </div>
             </div>
           </td>
         </tr>
+        
         ";
     }
 } else {
     echo "<tr><td colspan='7' class='px-4 py-3 text-center text-gray-500'>No users found</td></tr>";
 }
 ?>
+

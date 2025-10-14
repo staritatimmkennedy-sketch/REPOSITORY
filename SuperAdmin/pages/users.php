@@ -7,8 +7,8 @@ if (!isset($conn) || !($conn instanceof PDO)) {
 try {
     // Fetch users
     $userStmt = $conn->query("
-        SELECT 
-            u.firstName, u.middleName, u.lastName, u.yearLevel, u.username,
+    SELECT 
+            u.user_id, u.firstName, u.middleName, u.lastName, u.yearLevel, u.username,
             r.roleName AS role, 
             c.courseName AS course
         FROM user u

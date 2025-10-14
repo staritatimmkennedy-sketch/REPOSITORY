@@ -44,40 +44,6 @@ main {
     z-index: 5;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* 5. Buttons */
 .cf-button {
     background-color: #059669;
@@ -324,4 +290,22 @@ tr.manage-open td {
 #addRoleModal .flex.flex-col.gap-2 label {
     gap: 0.25rem;
     font-size: 0.95rem;
+}
+
+/* Simple fix - ensure dropdowns can escape table container */
+#usersTable {
+    overflow: visible !important;
+}
+
+#usersTable .relative {
+    position: relative;
+}
+
+#usersTable .dropdown-menu {
+    position: absolute;
+    z-index: 1000;
+}
+
+#usersTable tbody {
+    position: relative;
 }

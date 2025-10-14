@@ -38,17 +38,22 @@
       </thead>
       <tbody>
         <?php foreach ($roles as $r): ?>
+        <!-- In your role.html, ensure the table rows look like this -->
         <tr class="border-b hover:bg-gray-50"
-            data-role="<?= strtolower($r['role_name']) ?>"
-            data-desc="<?= strtolower($r['description']) ?>">
+            data-role-id="<?= htmlspecialchars($r['role_id']) ?>" 
+            data-role-name="<?= htmlspecialchars(strtolower($r['role_name'])) ?>"
+            data-desc="<?= htmlspecialchars(strtolower($r['description'])) ?>">
           <td class="px-4 py-3 text-sm"><?= htmlspecialchars($r["role_name"]) ?></td>
           <td class="px-4 py-3 text-sm"><?= htmlspecialchars($r["description"]) ?></td>
           <td class="px-4 py-3 text-center">
-            <div class="relative inline-block text-left">
-              <button class="w-24 text-center px-3 py-1 bg-gray-200 border border-gray-400 text-sm rounded-md hover:bg-gray-300 focus:outline-none whitespace-nowrap">Manage ▾</button>
-              <div class="hidden absolute right-0 mt-1 w-40 bg-white border rounded-md shadow-md z-10">
-                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100">Update Role</a>
-                <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Remove Role</a>
+            <div class="relative inline-block text-left dropdown-container">
+              <button class="w-24 text-center px-3 py-1 bg-gray-200 border border-gray-400 text-sm rounded-md hover:bg-gray-300 focus:outline-none whitespace-nowrap dropdown-toggle">
+                Manage ▾
+              </button>
+              <div class="dropdown-menu hidden absolute right-0 mt-1 w-40 bg-white border rounded-md shadow-md z-10">
+                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 view-role-btn">View Role</a>
+                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 edit-role-btn">Update Role</a>
+                <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 delete-role-btn">Delete Role</a>
               </div>
             </div>
           </td>

@@ -1,95 +1,111 @@
 <?php
 // pages/add_role_handler.php
+
 session_start();
 
 // Include database connection
 require_once __DIR__ . '/../db.php';
 
-header('Content-Type: 'application/json');
+// FIX 1: Corrected header syntax
+header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    echo json_encode(['success' => false, 'message' => 'Invalid request method']);
+    http_response_code(405);
+    echo json_encode(['success' => false, 'message' => 'Method not allowed']);
     exit;
 }
 
 try {
-    $data = json_decode(file_get_contents('php://input'), true);
-    
-    if (!$data) {
-        echo json_encode(['success' => false, 'message' => 'Invalid JSON data']);
-        exit;
-    }
-    
-    $roleName = trim($data['roleName'] ?? '');
-    $description = trim($data['description'] ?? '');
-    $permissions = $data['permissions'] ?? [];
-    
-    // Validate required fields
+    // FIX 2: Read data from $_POST (Standard form submission)
+    $roleName = trim($_POST['role_name'] ?? ''); // Assuming you used name="role_name" in HTML
+    $description = trim($_POST['description'] ?? '');
+    $permissions = $_POST['permissions'] ?? []; // This is an array if the HTML name is permissions[]
+
     if (empty($roleName)) {
-        echo json_encode(['success' => false, 'message' => 'Role name is required']);
-        exit;
+        http_response_code(400);
+        throw new Exception('Role name is required');
     }
-    
-    // Check database connection
-    if (!$conn) {
-        // Simulate success for demo purposes
-        $newRole = [
-            'role_name' => $roleName,
-            'description' => $description
-        ];
-        
-        echo json_encode([
-            'success' => true, 
-            'message' => 'Role added successfully (demo mode - database not connected)',
-            'role' => $newRole
-        ]);
-        exit;
+
+    if (!isset($conn) || !($conn instanceof PDO)) {
+        http_response_code(500);
+        throw new Exception('Database connection unavailable');
     }
-    
-    // Database operations
-    $stmt = $conn->prepare("SELECT COALESCE(MAX(role_id), 0) + 1 as new_id FROM role");
-    $stmt->execute();
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    $newRoleId = $result['new_id'];
-    
-    // Convert permissions to JSON
-    $permissionsJson = !empty($permissions) ? json_encode($permissions) : null;
+
+    // Define allowed permissions for validation
+    $allowedPerms = [
+        'borrow_material', 'return_material', 'publish_material',
+        'approve_publish', 'submit_material', 'approve_submission',
+        'manage_users', 'manage_roles', 'manage_courses', 'manage_materials'
+    ];
+    $permissions = array_intersect($permissions, $allowedPerms);
     
     // Check if role already exists
-    $checkStmt = $conn->prepare("SELECT COUNT(*) as count FROM role WHERE roleName = ?");
+    $checkStmt = $conn->prepare("SELECT COUNT(*) FROM role WHERE roleName = ?");
     $checkStmt->execute([$roleName]);
-    $roleExists = $checkStmt->fetch(PDO::FETCH_ASSOC)['count'] > 0;
-    
-    if ($roleExists) {
-        echo json_encode(['success' => false, 'message' => 'Role already exists']);
-        exit;
+    if ($checkStmt->fetchColumn() > 0) {
+        http_response_code(409); // Conflict
+        throw new Exception('Role name already exists');
+    }
+
+    // --- Start Transaction ---
+    $conn->beginTransaction();
+
+    // 1. Insert the new role (relying on AUTO_INCREMENT for role_id, if configured)
+    $insertRoleStmt = $conn->prepare("INSERT INTO role (roleName, description) VALUES (?, ?)");
+    $insertRoleStmt->execute([$roleName, $description ?: null]);
+    $roleId = $conn->lastInsertId(); // Get the ID of the newly inserted role
+
+    // Fallback if AUTO_INCREMENT is not used (your original logic, simplified)
+    if (!$roleId) {
+         $stmt = $conn->query("SELECT COALESCE(MAX(role_id), 0) as last_id FROM role");
+         $roleId = $stmt->fetchColumn() + 1;
+
+         // Re-run insert with manually fetched ID
+         $insertRoleStmt = $conn->prepare("INSERT INTO role (role_id, roleName, description) VALUES (?, ?, ?)");
+         $insertRoleStmt->execute([$roleId, $roleName, $description ?: null]);
+    }
+
+    // 2. Insert permissions for the new role
+    if (!empty($permissions)) {
+        $permStmt = $conn->prepare("INSERT INTO role_permissions (role_id, permission) VALUES (?, ?)");
+        foreach ($permissions as $perm) {
+            $permStmt->execute([$roleId, $perm]);
+        }
+    }
+
+    $conn->commit();
+    // --- End Transaction ---
+
+    // 3. Prepare the data for the JavaScript table update
+    $newRoleData = [
+        'role_id' => (int)$roleId,
+        'role_name' => $roleName,
+        'description' => $description ?: '' // Ensure description is a string
+    ];
+
+    echo json_encode([
+        'success' => true,
+        'message' => 'Role added successfully!',
+        'role' => $newRoleData
+    ]);
+
+} catch (Exception $e) {
+    // If a transaction was started but failed, roll it back
+    if (isset($conn) && $conn instanceof PDO && $conn->inTransaction()) {
+        $conn->rollBack();
     }
     
-    // Insert new role
-    $columnCheck = $conn->prepare("SHOW COLUMNS FROM role LIKE 'description'");
-    $columnCheck->execute();
-    $descriptionColumnExists = $columnCheck->rowCount() > 0;
-    
-    if ($descriptionColumnExists) {
-        $insertStmt = $conn->prepare("INSERT INTO role (role_id, roleName, description, permissions) VALUES (?, ?, ?, ?)");
-        $insertStmt->execute([$newRoleId, $roleName, $description, $permissionsJson]);
-    } else {
-        $insertStmt = $conn->prepare("INSERT INTO role (role_id, roleName) VALUES (?, ?)");
-        $insertStmt->execute([$newRoleId, $roleName]);
+    // Output the error message as JSON
+    // Only set a generic 500 if no specific code (like 409) was set earlier
+    if (http_response_code() === 200) {
+         http_response_code(500);
     }
-    
-    // Return the new role data
-    $newRoleStmt = $conn->prepare("SELECT role_id, roleName as role_name, COALESCE(description, '') as description FROM role WHERE role_id = ?");
-    $newRoleStmt->execute([$newRoleId]);
-    $newRole = $newRoleStmt->fetch(PDO::FETCH_ASSOC);
     
     echo json_encode([
-        'success' => true, 
-        'message' => 'Role added successfully',
-        'role' => $newRole
+        'success' => false,
+        'message' => 'Error: ' . $e->getMessage()
     ]);
-    
-} catch (Exception $e) {
-    echo json_encode(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
+    exit;
 }
+
 ?>
