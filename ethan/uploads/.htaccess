@@ -1,0 +1,8 @@
+# Block direct access to PDFs
+<Files ~ "\.pdf$">
+    Order Allow,Deny
+    Deny from all
+</Files>
+
+# Allow access only via PHP proxy (we'll create it)
+# (This is optional — see Step 4 for full security)
