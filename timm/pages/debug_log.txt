@@ -1,0 +1,32 @@
+Script started at 2025-10-19 13:54:19
+Entering try block
+POST method OK
+Raw POST data: 
+Role name: sa
+Sending response: {"success":true,"message":"Basic test passed - script is working","debug":{"role_name_received":"sa","server_time":"2025-10-19 13:54:19"}}
+Script ended at 2025-10-19 13:54:19
+
+Script started at 2025-10-19 13:54:27
+Entering try block
+POST method OK
+Raw POST data: 
+Role name: sa
+Sending response: {"success":true,"message":"Basic test passed - script is working","debug":{"role_name_received":"sa","server_time":"2025-10-19 13:54:27"}}
+Script ended at 2025-10-19 13:54:27
+
+Script started at 2025-10-19 13:57:37
+Entering try block
+POST method OK
+Role name: sa
+Description: 
+Sending response: {"success":true,"message":"Role added successfully!","role":{"role_id":797,"role_name":"sa","description":""}}
+Script ended at 2025-10-19 13:57:37
+
+Script started at 2025-10-19 13:58:06
+Entering try block
+POST method OK
+Role name: sa
+Description: 
+Sending response: {"success":true,"message":"Role added successfully!","role":{"role_id":780,"role_name":"sa","description":""}}
+Script ended at 2025-10-19 13:58:06
+

@@ -1,0 +1,293 @@
+/*
+ * Cleaned & Optimized Stylesheet for Admin Dashboard
+ * Font: Roboto, Design: Professional Green Theme
+ */
+
+/* Import Roboto font */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap');
+
+/* 1. Base Structure & Layout */
+body {
+    display: flex;
+    min-height: 100vh;
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #f4f7f9;
+}
+
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 2. Sidebar */
+.cf-sidebar {
+    background-color: #ffffff;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    z-index: 10;
+    flex-shrink: 0;
+    transition: width 0.3s ease;
+}
+
+/* 3. Header */
+.cf-header {
+    background-color: white; /* Green theme */
+    color: rgb(67, 67, 67);
+    border-bottom: 1px solid rgb(255, 255, 255);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+    position: sticky;
+    top: 0;
+    z-index: 5;
+}
+
+/* 5. Buttons */
+.cf-button {
+    background-color: #059669;
+    color: white;
+    border-radius: 4px;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.cf-button:hover {
+    background-color: #047857;
+}
+
+.cf-btn-primary {
+    background-color: #059669;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    transition: background-color 0.2s;
+}
+
+.cf-btn-primary:hover {
+    background-color: #047857;
+}
+
+/* 6. Cards & Tables */
+.cf-card {
+    background-color: #ffffff;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.cf-table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.cf-table th {
+    background-color: #f8f9fa;
+    color: #6c757d;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    padding: 0.75rem 1rem;
+    border-bottom: 2px solid #e9ecef;
+    text-align: center;
+}
+
+.cf-table td {
+    padding: 1rem;
+    border-bottom: 1px solid #e9ecef;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.cf-table tr {
+    transition: background-color 0.15s ease;
+}
+
+.cf-table tr:hover {
+    background-color: #f0f4f8;
+}
+
+/* 7. Search */
+.cf-search input {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 8px 12px;
+    width: 100%;
+    padding-left: 35px;
+}
+
+.cf-search input:focus {
+    outline: none;
+    border-color: #059669;
+    box-shadow: 0 0 0 2px rgba(5, 150, 105, 0.2);
+}
+
+/* 8. Pagination */
+.cf-pagination-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 1.5rem;
+}
+
+.cf-pagination a {
+    padding: 6px 12px;
+    border: 1px solid #ddd;
+    margin: 0 2px;
+    border-radius: 4px;
+    color: #059669;
+    text-decoration: none;
+}
+
+.cf-pagination a:hover {
+    background-color: #065f46;
+}
+
+.cf-pagination a.active {
+    background-color: #059669;
+    color: #024631;
+    border-color: #059669;
+}
+
+/* 9. Status Badges */
+.status-approved {
+    background-color: #d1fae5;
+    color: #065f46;
+}
+
+.status-pending {
+    background-color: #fed7aa;
+    color: #9a3412;
+}
+
+.status-denied {
+    background-color: #fecaca;
+    color: #991b1b;
+}
+
+.status-revisions {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+.status-published {
+    background-color: #dbeafe;
+    color: #1e40af;
+}
+
+/* 10. Dropdowns & Modals */
+.submission-dropdown {
+    min-width: 180px;
+}
+
+.manage-dropdown {
+    position: absolute !important;
+    z-index: 9999 !important;
+    top: 100%;
+    right: 0;
+    min-width: 180px;
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    margin-top: 8px;
+}
+
+.manage-dropdown.hidden {
+    display: none !important;
+}
+
+.manage-dropdown ul li a {
+    font-size: 14px;
+}
+
+tr.manage-open {
+    position: relative;
+    z-index: 20;
+}
+
+tr.manage-open td {
+    min-height: 120px;
+    vertical-align: top;
+}
+
+/* 11. Modal Styles */
+#submissionModal {
+    transition: opacity 0.3s ease;
+}
+
+#submissionModal:not(.hidden) {
+    display: flex !important;
+}
+
+#addUserModal .bg-white,
+#addRoleModal .bg-white {
+    max-width: 650px;
+    padding: 2rem 2rem;
+}
+
+#addUserForm {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem 2rem;
+}
+
+#addUserForm .full-width {
+    grid-column: 1 / span 2;
+}
+
+#addUserForm .form-actions {
+    grid-column: 1 / span 2;
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+#addUserModal h2,
+#addRoleModal h2 {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+}
+
+#addUserModal label,
+#addRoleModal label {
+    font-size: 0.95rem;
+    margin-bottom: 0.25rem;
+}
+
+#addUserModal input,
+#addUserModal select,
+#addUserModal textarea,
+#addRoleModal input,
+#addRoleModal select,
+#addRoleModal textarea {
+    font-size: 0.95rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 3px;
+}
+
+#addUserModal .mb-3,
+#addRoleModal .mb-3 {
+    margin-bottom: 0.75rem;
+}
+
+#addUserModal .cf-button,
+#addRoleModal .cf-button {
+    font-size: 0.95rem;
+    padding: 0.4rem 1rem;
+    border-radius: 3px;
+}
+
+#addUserModal .flex.gap-2,
+#addRoleModal .flex.gap-2 {
+    gap: 0.5rem;
+}
+
+#addRoleModal .flex.flex-col.gap-2 label {
+    gap: 0.25rem;
+    font-size: 0.95rem;
+}

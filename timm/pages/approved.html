@@ -1,0 +1,106 @@
+<div id="approved" class="p-6">
+  <!-- Header -->
+  <div class="bg-white border rounded-lg p-4 mb-6 shadow-sm">
+    <div class="flex flex-col sm:flex-row sm:items-center gap-3">
+      <input type="text" id="searchApproved" placeholder="Search by title, student, or author..."
+             class="flex-grow px-4 py-2 border rounded-md text-sm focus:ring focus:ring-blue-500 focus:outline-none">
+      <select id="typeFilter" class="px-3 py-2 border rounded-md text-sm focus:ring focus:ring-blue-500 focus:outline-none">
+        <option value="">All Types</option>
+        <option value="Thesis">Thesis</option>
+        <option value="Research Paper">Research Paper</option>
+        <option value="Capstone">Capstone</option>
+        <option value="Book">Book</option>
+        <option value="Journal">Journal</option>
+      </select>
+      <select id="collegeFilter" class="px-3 py-2 border rounded-md text-sm focus:ring focus:ring-blue-500 focus:outline-none">
+        <option value="">All Colleges</option>
+        <option value="CEAT">CEAT</option>
+        <option value="CHS">CHS</option>
+        <option value="CES">CES</option>
+        <option value="Business">Business</option>
+        <option value="CAS">CAS</option>
+      </select>
+      <select id="statusFilter" class="px-3 py-2 border rounded-md text-sm focus:ring focus:ring-blue-500 focus:outline-none">
+        <option value="">All Status</option>
+        <option value="approved">Approved</option>
+        <option value="published">Published</option>
+        <option value="rejected">Rejected</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="bg-white rounded-lg shadow overflow-hidden">
+    <table class="w-full border-collapse text-left" id="approvedMaterialsTable">
+      <thead class="bg-gray-100 border-b">
+        <tr>
+          <th class="px-4 py-3 text-sm font-semibold text-gray-600">User</th>
+          <th class="px-4 py-3 text-sm font-semibold text-gray-600">Title</th>
+          <th class="px-4 py-3 text-sm font-semibold text-gray-600">Material Type</th>
+          <th class="px-4 py-3 text-sm font-semibold text-gray-600">Author</th>
+          <th class="px-4 py-3 text-sm font-semibold text-gray-600">Submission Date</th>
+          <th class="px-4 py-3 text-sm font-semibold text-gray-600">Date Approved</th>
+          <th class="px-4 py-3 text-sm font-semibold text-gray-600">Dean's College</th>
+          <th class="px-4 py-3 text-sm font-semibold text-gray-600">Status</th>
+          <th class="px-4 py-3 text-sm font-semibold text-gray-600">File</th>
+          <th class="px-4 py-3 text-sm font-semibold text-gray-600 text-center">Action</th>
+        </tr>
+      </thead>
+      <tbody id="approvedMaterialsBody">
+        <tr>
+          <td colspan="10" class="px-4 py-3 text-center text-sm text-gray-500">Loading approved materials...</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Publish Modal -->
+  <div id="publishModal" class="hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+    <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md mx-4">
+      <h2 class="text-lg font-semibold mb-4">Publish Material</h2>
+      <form id="publishForm">
+        <input type="hidden" id="publishSubmissionId" name="submission_id">
+        <label class="block mb-2 text-sm font-medium">Call Number</label>
+        <input type="text" id="callNumber" name="callNumber" 
+               class="border w-full p-2 rounded mb-3 text-sm" 
+               placeholder="Enter unique call number" required>
+        <div class="flex justify-end gap-2 mt-4">
+          <button type="button" id="closePublishModal" class="bg-gray-400 text-white px-4 py-2 rounded text-sm hover:bg-gray-500">Cancel</button>
+          <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded text-sm hover:bg-blue-700">Publish</button>
+        </div>
+      </form>
+      <div id="publishMsg" class="mt-3 text-sm"></div>
+    </div>
+  </div>
+
+  <!-- Review Modal with PDF Viewer -->
+  <div id="reviewModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-5xl h-[85vh] flex flex-col">
+      <!-- Header -->
+      <div class="flex justify-between items-center p-4 border-b">
+        <h2 class="text-xl font-bold text-gray-800">Review Material (PDF)</h2>
+        <button id="closeModalBtn" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+      </div>
+
+      <!-- PDF Viewer + Loading -->
+      <div class="flex-1 relative overflow-hidden bg-gray-50">
+        <iframe id="pdfViewer" class="absolute inset-0 w-full h-full border-0"></iframe>
+
+        <!-- Loading Spinner -->
+        <div id="pdfLoading" class="hidden absolute inset-0 flex flex-col items-center justify-center bg-white bg-opacity-80">
+          <div class="animate-spin rounded-full h-12 w-12 border-b-4 border-blue-600"></div>
+          <p class="mt-3 text-gray-700 font-medium">Loading PDF...</p>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="p-4 border-t text-right">
+        <button id="closeModal" class="px-5 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- jQuery + JS -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="pages/approved.js"></script>
