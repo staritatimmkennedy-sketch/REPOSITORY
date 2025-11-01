@@ -1,0 +1,110 @@
+<div id="materials" class="p-6">
+  <div class="bg-white border rounded-lg p-4 mb-6 shadow-sm">
+    <div class="flex flex-col sm:flex-row sm:items-center gap-3">
+      <input type="text" id="searchType" placeholder="Search by ID, name or description"
+          class="flex-grow px-4 py-2 border rounded-md text-sm focus:ring focus:ring-green-500 focus:outline-none">
+    </div>
+  </div>
+
+  <div class="bg-white rounded-lg shadow overflow-x-auto">
+    <table class="w-full border-collapse" id="materialsTable">
+      <thead class="bg-gray-100 border-b">
+        <tr>
+          <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">ID</th>
+          <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Material Name</th> 
+          <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Description</th>
+          <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Author</th>
+          <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Call Number</th>
+          <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Librarian ID</th>
+          <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Submission ID</th>
+          <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Status</th>
+          <th class="px-4 py-3 text-center text-sm font-semibold text-gray-600">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php foreach ($materials as $m): ?>
+          <tr class="border-b hover:bg-gray-50">
+            <td class="px-4 py-3 text-sm"><?= htmlspecialchars($m['materialPublishing_id']) ?></td>
+            <td class="px-4 py-3 text-sm"><?= htmlspecialchars($m['materialName']) ?></td>
+            <td class="px-4 py-3 text-sm truncate max-w-xs" title="<?= htmlspecialchars($m['materialDescription']) ?>">
+              <?= htmlspecialchars(strlen($m['materialDescription']) > 80 ? substr($m['materialDescription'], 0, 77) . '...' : $m['materialDescription']) ?>
+            </td>
+            <td class="px-4 py-3 text-sm"><?= htmlspecialchars($m['author_fullname']) ?></td>
+            <td class="px-4 py-3 text-sm"><?= htmlspecialchars($m['callNumber']) ?></td>
+            <td class="px-4 py-3 text-sm"><?= htmlspecialchars($m['librarian_id']) ?></td>
+            <td class="px-4 py-3 text-sm"><?= htmlspecialchars($m['materialSubmission_id']) ?></td>
+            <td class="px-4 py-3 text-sm"><?= htmlspecialchars($m['materialStatus']) ?></td>
+            <td class="px-4 py-3 text-center">
+              <div class="relative inline-block text-left">
+                <button class="px-3 py-1 bg-gray-200 border border-gray-400 text-xs rounded hover:bg-gray-300">
+                  Manage
+                </button>
+                <div class="hidden absolute right-0 mt-1 w-40 bg-white border rounded-md shadow-md z-20">
+                  <a href="#" class="edit-material block px-4 py-2 text-sm hover:bg-gray-100">Edit Material</a>
+                  <a href="#" class="delete-material block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Remove Material</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+        <?php endforeach; ?>
+        <?php if (empty($materials)): ?>
+          <tr>
+            <td colspan="9" class="px-4 py-8 text-center text-gray-500">No published materials found.</td>
+          </tr>
+        <?php endif; ?>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div id="editModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white rounded-lg shadow-lg w-full max-w-lg p-6">
+    <h3 class="text-lg font-semibold mb-4">Edit Material</h3>
+
+    <form id="editForm" class="space-y-4">
+      <input type="hidden" id="editPublishingId">
+      <div><label class="block text-sm font-medium text-gray-700">Material Name</label>
+        <input type="text" id="editName" class="mt-1 w-full px-3 py-2 border rounded-md" required></div>
+      <div><label class="block text-sm font-medium text-gray-700">Description</label>
+        <textarea id="editDesc" class="mt-1 w-full px-3 py-2 border rounded-md" rows="3" required></textarea></div>
+      <div class="grid grid-cols-3 gap-2">
+        <div><label class="block text-sm font-medium text-gray-700">Firstname</label>
+          <input type="text" id="editFirst" class="mt-1 w-full px-3 py-2 border rounded-md"></div>
+        <div><label class="block text-sm font-medium text-gray-700">M.I.</label>
+          <input type="text" id="editMI" maxlength="1" class="mt-1 w-full px-3 py-2 border rounded-md"></div>
+        <div><label class="block text-sm font-medium text-gray-700">Lastname</label>
+          <input type="text" id="editLast" class="mt-1 w-full px-3 py-2 border rounded-md"></div>
+      </div>
+      <div><label class="block text-sm font-medium text-gray-700">Call Number</label>
+        <input type="text" id="editCall" class="mt-1 w-full px-3 py-2 border rounded-md" required></div>
+      <div class="flex justify-end gap-2 pt-4 border-t">
+        <button type="submit" id="saveBtn" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 font-medium">
+          Save Changes
+        </button>
+        <button type="button" id="closeEdit" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 font-medium">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="deleteModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white rounded-lg shadow-lg w-full max-w-sm p-6 text-center">
+    <h3 class="text-lg font-semibold mb-3">Remove Material?</h3>
+    <p class="text-gray-600 mb-5">This action cannot be undone.</p>
+    
+    <input type="hidden" id="deletePublishingId"> 
+
+    <div class="flex justify-center gap-4 mt-5">
+      <button type="button" id="closeDelete" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 font-medium">
+        Cancel
+      </button>
+      <button type="button" id="confirmDelete" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 font-medium">
+        Yes, Remove
+      </button>
+    </div>
+  </div>
+</div>
+
+<script src="pages/materials.js"></script>

@@ -1,0 +1,15 @@
+<div id="deleteUserModal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+  <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-sm">
+    <h2 class="text-xl font-bold mb-4 text-red-600">Confirm Deletion</h2>
+    <p class="mb-6">Are you sure you want to delete the user: <strong id="deleteUserName"></strong> (ID: <span id="deleteUserIdDisplay"></span>)? This action cannot be undone.</p>
+
+    <form id="deleteUserForm" method="POST">
+      <input type="hidden" name="user_id" id="deleteUserId" />
+
+      <div class="form-actions flex justify-end space-x-3">
+        <button type="button" id="cancelDeleteUser" class="cf-button bg-gray-300 text-gray-700">Cancel</button>
+        <button type="submit" class="cf-button bg-red-600 text-white">Delete User</button>
+      </div>
+    </form>
+  </div>
+</div>
