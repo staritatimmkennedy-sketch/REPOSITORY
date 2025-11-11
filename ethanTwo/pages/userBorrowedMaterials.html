@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Borrowed Materials</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <style>
+    .animate-spin{animation:spin 1s linear infinite}
+    @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+    #pdfBlocker{background:transparent;pointer-events:auto;cursor:not-allowed}
+    canvas{user-select:none;-webkit-user-drag:none}
+    @media print{
+      body *{visibility:hidden!important}
+      #viewModal,#viewModal *{visibility:visible!important}
+      #pdfContainer{filter:blur(15px)!important}
+      #pdfContainer::after{
+        content:"PRINTING DISABLED";position:absolute;top:50%;left:50%;
+        transform:translate(-50%,-50%);font-size:4rem;color:red;font-weight:bold;
+      }
+    }
+    #dropdownPortal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 9999;
+    }
+    #dropdownPortal > div {
+      pointer-events: auto;
+    }
+  </style>
+</head>
+<body class="bg-gray-50">
+<div class="p-6">
+  <!-- Header: Search + Filters -->
+  <div class="bg-white border rounded-lg p-4 mb-6 shadow-sm">
+    <div class="flex flex-col sm:flex-row sm:items-center gap-3">
+      <!-- Search Bar -->
+      <input 
+        type="text" 
+        id="tableSearch" 
+        placeholder="Search by Title, Author, Call #, or Status..." 
+        class="flex-grow px-4 py-2 border rounded-md text-sm focus:ring focus:ring-blue-500 focus:outline-none"
+      >
+      <!-- Clear Button -->
+      <button 
+        id="clearSearch" 
+        class="px-3 py-2 text-xs text-gray-600 bg-gray-100 rounded hover:bg-gray-200 hidden"
+      >
+        Clear
+      </button>
+    </div>
+  </div>
+
+  <!-- Borrowed Materials Table -->
+  <div class="bg-white rounded-lg shadow overflow-visible">
+    <table class="w-full border-collapse text-left" id="borrowingTable">
+      <thead class="bg-gray-100 border-b">
+        <tr>
+          <th class="px-4 py-3 text-sm font-semibold text-gray-600">Date Requested</th>
+          <th class="px-4 py-3 text-sm font-semibold text-gray-600">Title</th>
+          <th class="px-4 py-3 text-sm font-semibold text-gray-600">Material Type</th>
+          <th class="px-4 py-3 text-sm font-semibold text-gray-600">Author</th>
+          <th class="px-4 py-3 text-sm font-semibold text-gray-600">Material Call Number</th>
+          <th class="px-4 py-3 text-sm font-semibold text-gray-600">Due Date</th>
+          <th class="px-4 py-3 text-sm font-semibold text-gray-600">Status</th>
+          <th class="px-4 py-3 text-sm font-semibold text-gray-600 text-center">Action</th>
+        </tr>
+      </thead>
+      <tbody id="borrowingRequestsBody">
+        <tr>
+          <td colspan="8" class="px-4 py-3 text-center text-sm text-gray-500">Loading your requests...</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Details Modal -->
+<div id="detailsModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+  <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
+    <div class="flex items-center justify-between p-6 border-b">
+      <h3 class="text-lg font-semibold text-gray-900">Request Details</h3>
+      <button type="button" class="text-gray-400 hover:text-gray-600 close-details-modal" aria-label="Close modal">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+
+    <div class="p-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Material Information -->
+        <div class="space-y-4">
+          <h4 class="font-medium text-gray-900 border-b pb-2">Material</h4>
+          <div class="space-y-2 text-sm">
+            <div><span class="font-medium">Title:</span> <span id="detailMaterialTitle" class="text-gray-700"></span></div>
+            <div><span class="font-medium">Call Number:</span> <span id="detailCallNumber" class="text-gray-700"></span></div>
+            <div><span class="font-medium">Type:</span> <span id="detailMaterialType" class="text-gray-700"></span></div>
+            <div><span class="font-medium">Author:</span> <span id="detailAuthor" class="text-gray-700"></span></div>
+            <div><span class="font-medium">Current Status:</span> <span id="detailMaterialStatus" class="text-gray-700"></span></div>
+          </div>
+        </div>
+
+        <!-- Request Details -->
+        <div class="space-y-4">
+          <h4 class="font-medium text-gray-900 border-b pb-2">Request</h4>
+          <div class="space-y-2 text-sm">
+            <div><span class="font-medium">Status:</span> <span id="detailBorrowStatus" class="text-gray-700"></span></div>
+            <div><span class="font-medium">Request Date:</span> <span id="detailBorrowedDate" class="text-gray-700"></span></div>
+            <div><span class="font-medium">Approval Date:</span> <span id="detailApprovalDate" class="text-gray-700"></span></div>
+            <div><span class="font-medium">Due Date:</span> <span id="detailDueDate" class="text-gray-700"></span></div>
+          </div>
+        </div>
+
+        <!-- Remarks -->
+        <div class="space-y-4 md:col-span-2">
+          <h4 class="font-medium text-gray-900 border-b pb-2">Remarks</h4>
+          <div class="space-y-2 text-sm">
+            <div><span class="font-medium">Your Remarks:</span></div>
+            <div id="detailStudentRemarks" class="text-gray-700 bg-gray-50 p-3 rounded-md min-h-[60px]"></div>
+            <div><span class="font-medium">Librarian Remarks:</span></div>
+            <div id="detailLibrarianRemarks" class="text-gray-700 bg-gray-50 p-3 rounded-md min-h-[60px]"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex justify-end space-x-3 p-6 border-t bg-gray-50 rounded-b-lg">
+      <button type="button" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 close-details-modal">
+        Close
+      </button>
+    </div>
+  </div>
+</div>
+
+<div id="returnModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+  <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4">
+      <div class="flex items-center justify-between p-6 border-b">
+          <h3 class="text-lg font-semibold text-gray-900">Return Material</h3>
+          <button type="button" class="text-gray-400 hover:text-gray-600 close-return-modal" aria-label="Close modal">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
+          </button>
+      </div>
+      <div class="p-6">
+          <p id="returnModalMessage" class="text-sm text-gray-700">Are you sure you want to return this material?</p>
+      </div>
+      <div class="flex justify-end space-x-3 p-6 border-t bg-gray-50 rounded-b-lg">
+          <button type="button" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 close-return-modal">
+              Cancel
+          </button>
+          <button type="button" class="px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" id="confirmReturnBtn">
+              Return
+          </button>
+      </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<!-- PDF Viewer Modal -->
+<div id="viewModal" class="hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4">
+  <div class="bg-white rounded-xl shadow-2xl w-full max-w-7xl h-[95vh] flex flex-col overflow-hidden">
+    <div class="flex justify-between items-center p-5 border-b bg-gray-50">
+      <div>
+        <h2 class="text-xl font-bold text-gray-800">View Material (Protected)</h2>
+        <p id="watermarkUser" class="text-sm text-gray-600 mt-1">Loading...</p>
+      </div>
+      <button class="close-view-modal text-red-600 hover:text-red-800 text-2xl">x</button>
+    </div>
+
+    <div class="flex-1 relative overflow-auto bg-gray-100 p-4">
+      <div id="pdfContainer" class="space-y-6"></div>
+      <div id="pdfBlocker" class="absolute inset-0 z-20"></div>
+      <div id="pdfLoading" class="hidden absolute inset-0 flex flex-col items-center justify-center bg-white bg-opacity-95 z-50">
+        <div class="animate-spin rounded-full h-14 w-14 border-b-4 border-blue-600"></div>
+        <p class="mt-4 text-lg font-medium text-gray-700">Loading PDF...</p>
+      </div>
+    </div>
+
+    <div class="p-4 border-t bg-gray-50 text-right">
+      <button class="close-view-modal px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+        Close
+      </button>
+    </div>
+  </div>
+</div>
+
+<div id="dropdownPortal"></div>
+
+<script>
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="pages/auto_close_modal.js"></script>
+<script src="pages/userBorrowedMaterials.js"></script>
+</body>
+</html>
