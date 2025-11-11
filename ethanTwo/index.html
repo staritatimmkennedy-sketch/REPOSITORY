@@ -1,16 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $pageTitle; ?></title>
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.5/dist/cdn.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.13.5/dist/cdn.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="/SuperAdmin/style.css">
-    
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login to Your Account</title>
+<link rel="stylesheet" href ="index.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="loginOne.js"></script>
 </head>
-<body class="flex min-h-screen text-gray-800">
+  <body>
     <?php include __DIR__ . '/sidebar.php'; ?>
     <?php include __DIR__ . '/pages/collegeModal.html'; ?>
 
@@ -39,5 +37,33 @@
     <?php include __DIR__ . '/pages/deleteCollegeModal.html'; ?>
     <?php include __DIR__ . '/pages/edit_course_modal.php';?>
     <?php include __DIR__ . '/pages/delete_course_modal.php'; ?>
-</body>
+    <div class="container">
+      <h2>Login to Your Account</h2>
+
+      <div id="error"></div>
+      
+      <!-- Login Form -->
+      <form action="" name="login">
+          <label for="username">Username</label>
+          <input form="login"type="text" id="username" name="username" placeholder="Enter your username" required>
+
+          <label for="password">Password</label>
+          <input form="login"type="password" id="password" name="password" placeholder="Enter your password" required>
+
+          <div class="checkbox">
+            <input form="login" type="checkbox" id="show-pass">
+            <label for="show-pass">Show password</label>
+          </div>
+
+          <div class="forgot-password">
+            <a href="forgot_password.php">Forgot password?</a>
+          </div>
+
+          <button form="login" type="submit" id="btn-submit">Login</button>
+          <div class="register-link">
+            Don't have an account? <a href="registrationOne.php">Register</a>
+          </div>
+      </form>
+    </div>
+  </body>
 </html>

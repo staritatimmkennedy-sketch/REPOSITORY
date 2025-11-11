@@ -9,6 +9,34 @@
 <script src="loginOne.js"></script>
 </head>
   <body>
+    <?php include __DIR__ . '/sidebar.php'; ?>
+    <?php include __DIR__ . '/pages/collegeModal.html'; ?>
+
+    
+    <!-- Main -->
+    <main class="flex-1 flex flex-col">
+        <?php include __DIR__ . '/header.php'; ?>
+        <div class="p-6">
+            <?php include $contentFile; ?>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="app.js"></script>
+    <?php include __DIR__ . '/pages/add_role_modal.php'; ?>
+    <?php include __DIR__ . '/pages/add_user_modal.html'; ?>
+    <?php include __DIR__ . '/pages/manage_user_modal.html'?>
+    <?php include __DIR__ . '/pages/add_material_type.html'?>
+    <?php include __DIR__ . '/pages/delete_user_modal.html'?>
+    <?php include __DIR__ . '/pages/add_course_modal.php'; ?>
+    <?php include __DIR__ . '/pages/update_role_modal.php'?>
+    <?php include __DIR__ . '/pages/delete_role_modal.php'?>
+    <?php include __DIR__ . '/pages/update_material_type_modal.php'; ?>
+    <?php include __DIR__ . '/pages/delete_material_type_modal.php'; ?>
+    <?php include __DIR__ . '/pages/editCollegeModal.html'; ?>
+    <?php include __DIR__ . '/pages/deleteCollegeModal.html'; ?>
+    <?php include __DIR__ . '/pages/edit_course_modal.php';?>
+    <?php include __DIR__ . '/pages/delete_course_modal.php'; ?>
     <div class="container">
       <h2>Login to Your Account</h2>
 
