@@ -32,10 +32,10 @@ $pageTitles = [
 
 // 2. Determine the current page from the URL or set a default
 $currentPage = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
-
+echo $currentPage;
 // 3. Define the file path for the content (absolute path for safety)
 $contentFile = __DIR__ . '/pages/' . $currentPage . '.php';
-
+echo $contentFile;
 // 4. Fallback to dashboard if invalid page or missing file
 if (!isset($pageTitles[$currentPage]) || !file_exists($contentFile)) {
     $contentFile = __DIR__ . '/pages/dashboard.php';
