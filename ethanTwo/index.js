@@ -34,7 +34,8 @@ $(document).ready(function(){
                   document.getElementById('error').innerHTML=data;
                 }
                 else{
-                  location.href="./index.php?page=student_dashboard"
+                  //location.href="./index.php?page=student_dashboard"
+                  location.href="./pages/student_dashboard.html"
                 }
             }
         });
