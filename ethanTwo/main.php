@@ -46,6 +46,6 @@ if (!isset($pageTitles[$currentPage]) || !file_exists($contentFile)) {
 $pageTitle = $pageTitles[$currentPage];
 
 //index html
-include 'index.html'
+include 'main.html'
 
 ?>

@@ -21,21 +21,21 @@ $(document).ready(function(){
             success: function(data)
             {
                 if(data=="Admin"){
-                    location.href="./index.php?page=adminDashboard"
+                    location.href="./main.php?page=adminDashboard"
                 }
                 else if(data =="Librarian"){
-                    location.href="./index.php?page=librarianDashboard"
+                    location.href="./main.php?page=librarianDashboard"
                 }
                 else if(data=="Dean")
                 {
-                  location.href="./index.php?page=deanDashboard"
+                  location.href="./main.php?page=deanDashboard"
                 }
                 else if(data=="Username and password is incorrect!"){
                   document.getElementById('error').innerHTML=data;
                 }
                 else{
-                  //location.href="./index.php?page=student_dashboard"
-                  location.href="./pages/student_dashboard.html"
+                  location.href="./main.php?page=student_dashboard"
+            
                 }
             }
         });
