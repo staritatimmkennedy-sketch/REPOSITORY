@@ -1,7 +1,7 @@
 <?php
 // Get environment variables from Railway MySQL
 $db_host = getenv('mysql.railway.internal');
-$db_username = getenv('root');
+$db_username = getenv('library_repository_db');
 $db_password = getenv('zHoqJftiBratOikAHUOapfORUUBiHDFd');
 $db_name = getenv('railway');
 $db_port = getenv('3306');
@@ -19,6 +19,6 @@ try {
 } catch (PDOException $e) {
     error_log("DB Connection failed: " . $e->getMessage());
     error_log("Connection details - Host: $db_host, DB: $db_name, User: $db_username");
-    die("Database connection error. Please try again later.");
+    die("Sad");
 }
 ?>
