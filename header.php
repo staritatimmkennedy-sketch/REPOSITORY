@@ -78,7 +78,7 @@ $title = $pageTitle;
                     <div class="border-t border-gray-100"></div>
 
                     <div class="p-2">
-                        <a href="loginOne.html" class="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-red-50 group">
+                        <a href="index.html" class="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-red-50 group">
                             <span class="text-sm text-red-600 group-hover:text-red-700">Logout</span>
                         </a>
                     </div>

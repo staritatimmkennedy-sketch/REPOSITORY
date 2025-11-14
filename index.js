@@ -34,27 +34,27 @@ $(document).ready(function(){
 
     $.ajax({
       method: "POST",
-      url: "loginOne.php",
+      url: "index.php",
       data: {
         userName: userName,
         passWord: passWord
       },
       success: function(data) {
         if(data == "Admin") {
-          location.href = "./index.php?page=adminDashboard";
+          location.href = "./main.php?page=adminDashboard";
         }
         else if(data == "Librarian") {
-          location.href = "./index.php?page=librarianDashboard";
+          location.href = "./main.php?page=librarianDashboard";
         }
         else if(data == "Dean") {
-          location.href = "./index.php?page=deanDashboard";
+          location.href = "./main.php?page=deanDashboard";
         }
         else if(data == "Invalid username or password" || data == "Missing login credentials" || data == "Login failed. Please try again.") {
           errorElement.textContent = data;
           errorElement.classList.remove('hidden'); // Show error
         }
         else {
-          location.href = "./index.php?page=student_dashboard";
+          location.href = "./main.php?page=student_dashboard";
         }
       },
       error: function() {

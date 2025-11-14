@@ -52,7 +52,7 @@ $(document).ready(function () {
             debugLog('Closing success modal and redirecting');
             $('#actionSuccessModal').addClass('hidden');
             // Redirect to login page after successful registration
-            window.location.href = 'loginOne.html';
+            window.location.href = 'main.html';
         });
 
         // Close modals when clicking outside
@@ -64,7 +64,7 @@ $(document).ready(function () {
             if ($(e.target).is('#actionSuccessModal')) {
                 debugLog('Closing success modal via outside click and redirecting');
                 $('#actionSuccessModal').addClass('hidden');
-                window.location.href = 'loginOne.html';
+                window.location.href = 'main.html';
             }
         });
     }

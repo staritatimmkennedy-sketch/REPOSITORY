@@ -29,7 +29,7 @@ $current = isset($currentPage) ? $currentPage : 'dashboard';
     <!--SYS ADMIN-->
     <?php if ($role === "Admin"): ?>
         <!-- Dashboard -->
-        <a href="index.php?page=adminDashboard"
+        <a href="main.php?page=adminDashboard"
            class="cf-nav-item <?php echo ($current === 'adminDashboard') ? 'active' : ''; ?>">
            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
                 stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-3 flex-shrink-0">
@@ -73,9 +73,9 @@ $current = isset($currentPage) ? $currentPage : 'dashboard';
           </button>
           <div x-show="openMenu === 'people'" x-collapse 
                class="ml-6 mt-2 space-y-1">
-            <a href="index.php?page=users" 
+            <a href="main.php?page=users" 
                class="cf-sub-item <?php echo ($current === 'users') ? 'active' : ''; ?>">Users</a>
-            <a href="index.php?page=role" 
+            <a href="main.php?page=role" 
                class="cf-sub-item <?php echo ($current === 'role') ? 'active' : ''; ?>">Roles</a>
           </div>
         </div>
@@ -108,9 +108,9 @@ $current = isset($currentPage) ? $currentPage : 'dashboard';
           </button>
           <div x-show="openMenu === 'materials'" x-collapse 
                class="ml-6 mt-2 space-y-1">
-            <a href="index.php?page=materials" 
+            <a href="main.php?page=materials" 
                class="cf-sub-item <?php echo ($current === 'materials') ? 'active' : ''; ?>">Material Records</a>
-            <a href="index.php?page=materialType" 
+            <a href="main.php?page=materialType" 
                class="cf-sub-item <?php echo ($current === 'materialType') ? 'active' : ''; ?>">Material Types</a>
           </div>
         </div>
@@ -141,15 +141,15 @@ $current = isset($currentPage) ? $currentPage : 'dashboard';
           </button>
           <div x-show="openMenu === 'acad'" x-collapse 
                class="ml-6 mt-2 space-y-1">
-            <a href="index.php?page=college" 
+            <a href="main.php?page=college" 
                class="cf-sub-item <?php echo ($current === 'college') ? 'active' : ''; ?>">Colleges</a>
-            <a href="index.php?page=course" 
+            <a href="main.php?page=course" 
                class="cf-sub-item <?php echo ($current === 'course') ? 'active' : ''; ?>">Courses</a>
           </div>
         </div>
 
         <!-- Audit Logs -->
-        <a href="index.php?page=logs" 
+        <a href="main.php?page=logs" 
            class="cf-nav-item <?php echo ($current === 'logs') ? 'active' : ''; ?>">
            <svg class="w-5 h-5 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -162,7 +162,7 @@ $current = isset($currentPage) ? $currentPage : 'dashboard';
     <!--STUDENT/FACULTY-->
     <?php elseif ($role === "Student" || $role === "Faculty"): ?>
         <!-- Dashboard -->
-        <a href="index.php?page=student_dashboard"
+        <a href="main.php?page=student_dashboard"
             class="cf-nav-item <?php echo ($current === 'student_dashboard') ? 'active' : ''; ?>">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
                   stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-3 flex-shrink-0">
@@ -173,7 +173,7 @@ $current = isset($currentPage) ? $currentPage : 'dashboard';
         </a>
 
         <!-- Submissions -->
-        <a href="index.php?page=submissions" 
+        <a href="main.php?page=submissions" 
             class="cf-nav-item <?php echo ($current === 'submissions') ? 'active' : ''; ?>">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
                   stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-3 flex-shrink-0">
@@ -184,7 +184,7 @@ $current = isset($currentPage) ? $currentPage : 'dashboard';
         </a>
 
         <!-- Borrowed Materials -->
-        <a href="index.php?page=userBorrowedMaterials" 
+        <a href="main.php?page=userBorrowedMaterials" 
             class="cf-nav-item <?php echo ($current === 'userBorrowedMaterials') ? 'active' : ''; ?>">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
                   stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-3 flex-shrink-0">
@@ -195,7 +195,7 @@ $current = isset($currentPage) ? $currentPage : 'dashboard';
         </a>
 
         <!-- Published Materials -->
-        <a href="index.php?page=published" 
+        <a href="main.php?page=published" 
             class="cf-nav-item <?php echo ($current === 'published') ? 'active' : ''; ?>">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
                   stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-3 flex-shrink-0">
@@ -215,7 +215,7 @@ $current = isset($currentPage) ? $currentPage : 'dashboard';
     <!--DEAN-->
     <?php elseif ($role === "Dean"): ?>
         <!-- Dashboard -->
-        <a href="index.php?page=deanDashboard"
+        <a href="main.php?page=deanDashboard"
             class="cf-nav-item <?php echo ($current === 'deanDashboard') ? 'active' : ''; ?>">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
                 stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-3 flex-shrink-0">
@@ -225,7 +225,7 @@ $current = isset($currentPage) ? $currentPage : 'dashboard';
             Dashboard
         </a>
      <!-- Borrowed Materials -->
-     <a href="index.php?page=userBorrowedMaterials" 
+     <a href="main.php?page=userBorrowedMaterials" 
             class="cf-nav-item <?php echo ($current === 'userBorrowedMaterials') ? 'active' : ''; ?>">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
                   stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-3 flex-shrink-0">
@@ -236,7 +236,7 @@ $current = isset($currentPage) ? $currentPage : 'dashboard';
         </a>
 
         <!-- Submissions -->
-        <a href="index.php?page=deanSubmissions"
+        <a href="main.php?page=deanSubmissions"
             class="cf-nav-item <?php echo ($current === 'deanSubmissions') ? 'active' : ''; ?>">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
                 stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-3 flex-shrink-0">
@@ -247,7 +247,7 @@ $current = isset($currentPage) ? $currentPage : 'dashboard';
         </a>
 
         <!-- Published Materials -->
-        <a href="index.php?page=published" 
+        <a href="main.php?page=published" 
             class="cf-nav-item <?php echo ($current === 'published') ? 'active' : ''; ?>">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
                 stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-3 flex-shrink-0">
@@ -266,7 +266,7 @@ $current = isset($currentPage) ? $currentPage : 'dashboard';
     <!--LIBRARIAN-->
     <?php elseif ($role === "Librarian"): ?>
         <!-- Dashboard -->
-        <a href="index.php?page=librarianDashboard"
+        <a href="main.php?page=librarianDashboard"
             class="cf-nav-item <?php echo ($current === 'librarianDashboard') ? 'active' : ''; ?>">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
                     stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-3 flex-shrink-0">
@@ -304,15 +304,15 @@ $current = isset($currentPage) ? $currentPage : 'dashboard';
             </button>
                 <div x-show="openMenu === 'materials'" x-collapse 
                         class="ml-6 mt-2 space-y-1">
-                     <a href="index.php?page=materials" 
+                     <a href="main.php?page=materials" 
                         class="cf-sub-item <?php echo ($current === 'materials') ? 'active' : ''; ?>">Material Records</a>
-                     <a href="index.php?page=materialType" 
+                     <a href="main.php?page=materialType" 
                         class="cf-sub-item <?php echo ($current === 'materialType') ? 'active' : ''; ?>">Material Types</a>
                 </div>
         </div>
 
          <!-- Borrowing Requests -->
-         <a href="index.php?page=borrowing" 
+         <a href="main.php?page=borrowing" 
             class="cf-nav-item <?php echo ($current === 'borrowing') ? 'active' : ''; ?>">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
                   stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-3 flex-shrink-0">
@@ -323,7 +323,7 @@ $current = isset($currentPage) ? $currentPage : 'dashboard';
          </a>
 
          <!-- Submissions -->
-         <a href="index.php?page=approved" 
+         <a href="main.php?page=approved" 
             class="cf-nav-item <?php echo ($current === 'approved') ? 'active' : ''; ?>">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
                   stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-3 flex-shrink-0">
@@ -334,7 +334,7 @@ $current = isset($currentPage) ? $currentPage : 'dashboard';
          </a>
 
          <!-- Academics -->
-         <a href="index.php?page=librarianColleges" 
+         <a href="main.php?page=librarianColleges" 
             class="cf-nav-item <?php echo ($current === 'librarianColleges') ? 'active' : ''; ?>">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
                   stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-3 flex-shrink-0">
@@ -352,7 +352,7 @@ $current = isset($currentPage) ? $currentPage : 'dashboard';
   <!-- Settings & Logout (common) -->
   <div>
   
-    <a href="loginOne.html"
+    <a href="index.html"
        class="cf-nav-item text-red-600 mt-2">
        <svg class="w-5 h-5 mr-3 flex-shrink-0" fill="none" 
             stroke="currentColor" viewBox="0 0 24 24">
