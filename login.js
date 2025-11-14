@@ -34,7 +34,7 @@ $(document).ready(function(){
 
     $.ajax({
       method: "POST",
-      url: "index.php",
+      url: "login.php",
       data: {
         userName: userName,
         passWord: passWord
