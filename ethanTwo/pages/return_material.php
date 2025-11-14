@@ -3,12 +3,12 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 header('Content-Type: application/json');
-require __DIR__ . '/../db.php';
+require _DIR_ . '/../db.php';
 
 error_log("Return Material Session Debug: " . print_r($_SESSION, true));
 error_log("Return Material POST Data: " . print_r($_POST, true));
 
-if (!isset($_SESSION['user_id']) || !isset($_SESSION['role']) || strtoupper($_SESSION['role']) !== 'STUDENT') {
+if (!isset($_SESSION['user_id']) || !isset($_SESSION['role'])) {
     error_log("Unauthorized access: user_id=" . ($_SESSION['user_id'] ?? 'not set') . ", role=" . ($_SESSION['role'] ?? 'not set'));
     http_response_code(403);
     echo json_encode(['success' => false, 'error' => 'Unauthorized access']);

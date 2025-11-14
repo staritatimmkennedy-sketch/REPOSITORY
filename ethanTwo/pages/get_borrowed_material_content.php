@@ -1,7 +1,7 @@
 <?php
 session_start();
 header('Content-Type: application/json');
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Student') {
+if (!isset($_SESSION['user_id']) || !isset($_SESSION['role'])) {
     echo json_encode(['error' => 'Unauthorized']);
     exit;
 }
@@ -10,7 +10,7 @@ if (!$callNumber) {
     echo json_encode(['error' => 'Invalid call number']);
     exit;
 }
-require __DIR__ . '/../db.php';
+require _DIR_ . '/../db.php';
 try {
     $sql = "
         SELECT m.materialFile

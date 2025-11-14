@@ -164,24 +164,25 @@ $(document).ready(function () {
         console.log(`📝 Processing item ${index}:`, item);
         
         const row = `
-          <tr class="border-b hover:bg-gray-50">
-            <td class="px-4 py-3 text-sm font-medium text-gray-900">${escapeHtml(item.materialType_id || 'N/A')}</td>
-            <td class="px-4 py-3 text-sm">${escapeHtml(item.materialTypeName || 'No name')}</td>
-            <td class="px-4 py-3 text-sm">${escapeHtml(item.materialTypeDescription || 'No description')}</td>
-            <td class="px-4 py-3 text-center">
-              <div class="relative inline-block text-left">
-                <button class="manage-btn px-3 py-1 bg-gray-200 border border-gray-400 text-xs rounded hover:bg-gray-300 transition-colors">
-                  Manage
-                </button>
-                <div class="dropdown-menu hidden absolute right-0 mt-1 w-40 bg-white border border-gray-200 rounded-md shadow-lg z-20">
-                  <a href="#" class="edit-material-type block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors" 
-                     data-id="${escapeHtml(item.materialType_id)}">Edit Type</a>
-                  <a href="#" class="delete-material-type block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 transition-colors"
-                     data-id="${escapeHtml(item.materialType_id)}">Remove Type</a>
-                </div>
-              </div>
-            </td>
-          </tr>`;
+                  <tr class="border-b hover:bg-gray-50">
+                    <td class="px-4 py-3 text-sm font-medium text-gray-900">${escapeHtml(item.materialType_id || 'N/A')}</td>
+                    <td class="px-4 py-3 text-sm">${escapeHtml(item.materialTypeName || 'No name')}</td>
+                    <td class="px-4 py-3 text-sm">${escapeHtml(item.materialTypeDescription || 'No description')}</td>
+                    <td class="px-4 py-3 text-center">
+                      <div class="relative inline-block text-left">
+                        <button class="manage-btn w-24 px-3 py-1 bg-gray-200 border border-gray-400 text-sm rounded-md hover:bg-gray-300 focus:outline-none"
+                                data-material-type='${escapeHtml(JSON.stringify(item))}'>
+                          Manage ▾
+                        </button>
+                        <div class="dropdown-menu hidden absolute right-0 mt-1 w-40 bg-white border border-gray-200 rounded-md shadow-lg z-20">
+                          <a href="#" class="edit-material-type block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 border-b border-gray-200 transition-colors" 
+                            data-id="${escapeHtml(item.materialType_id)}">Edit Type</a>
+                          <a href="#" class="delete-material-type block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 transition-colors"
+                            data-id="${escapeHtml(item.materialType_id)}">Remove Type</a>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>`;
         tbody.append(row);
       });
   

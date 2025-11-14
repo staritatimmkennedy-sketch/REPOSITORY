@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register an Account</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+
+<body class="bg-gray-100 flex justify-center items-center min-h-screen p-4">
+  <div class="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
+    <h2 class="text-xl font-bold text-center mb-4">Create an Account</h2>
+
+    <form id="registrationForm" method="POST" action="registrationUser.php">
+      <label class="block font-medium text-gray-700 mb-1 text-sm">Username</label>
+      <input type="text" name="username" id="username" placeholder="Enter Username" 
+             class="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-green-500 focus:outline-none" required>
+    
+      <label class="block font-medium text-gray-700 mb-1 text-sm mt-3">Password</label>
+      <div class="space-y-2 mb-3">
+        <input type="password" id="pw1" name="password" placeholder="Enter Password" 
+               class="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-green-500 focus:outline-none" required>
+        <input type="password" id="pw2" placeholder="Repeat Password" 
+               class="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-green-500 focus:outline-none" required>
+      </div>
+      <div id="password-error" class="text-red-500 text-xs mb-3"></div>
+    
+      <div class="flex items-center mb-4">
+        <input type="checkbox" id="show-pass" class="w-4 h-4 mr-2">
+        <label for="show-pass" class="text-xs">Show password</label>
+      </div>
+    
+      <label class="block font-medium text-gray-700 mb-1 text-sm">Personal Details</label>
+      <input type="text" name="lastname" placeholder="Last Name" 
+             class="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-green-500 focus:outline-none mb-2" required>
+      <input type="text" name="firstname" placeholder="First Name" 
+             class="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-green-500 focus:outline-none mb-2" required>
+      <input type="text" name="middlename" placeholder="Middle Name" 
+             class="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-green-500 focus:outline-none mb-3">
+    
+      <label for="department" class="block font-medium text-gray-700 mb-1 text-sm">Department</label>
+      <div class="relative mb-3">
+        <select name="department" id="department" 
+                class="w-full px-3 py-2 pr-8 border border-gray-300 rounded text-sm appearance-none focus:ring-2 focus:ring-green-500 focus:outline-none" required>
+          <option value="" disabled selected>Select Department</option>
+          <option value="1">College of Engineering, Architecture &amp; Technology</option>
+          <option value="2">College of Health &amp; Sciences</option>
+          <option value="3">College of Education &amp; Sciences</option>
+          <option value="4">Business College</option>
+          <option value="5">College of Arts &amp; Science</option>
+        </select>
+        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+          <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </div>
+      </div>
+    
+      <label for="course" class="block font-medium text-gray-700 mb-1 text-sm">Course</label>
+      <div class="relative mb-3">
+        <select name="course" id="course" 
+                class="w-full px-3 py-2 pr-8 border border-gray-300 rounded text-sm appearance-none focus:ring-2 focus:ring-green-500 focus:outline-none" required>
+          <option value="" disabled selected>Select Course</option>
+        </select>
+        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+          <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </div>
+      </div>
+    
+      <label for="yearlevel" class="block font-medium text-gray-700 mb-1 text-sm">Year Level</label>
+      <div class="relative mb-4">
+        <select name="yearlevel" id="yearlevel" 
+                class="w-full px-3 py-2 pr-8 border border-gray-300 rounded text-sm appearance-none focus:ring-2 focus:ring-green-500 focus:outline-none" required>
+          <option value="" disabled selected>Select Year Level</option>
+          <option value="1">1st Year</option>
+          <option value="2">2nd Year</option>
+          <option value="3">3rd Year</option>
+          <option value="4">4th Year</option>
+        </select>
+        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+          <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </div>
+      </div>
+    
+      <button type="submit" 
+              class="w-full py-2 bg-green-700 text-white rounded font-medium hover:bg-green-800 transition duration-200 mb-3 text-sm">
+        Register Account
+      </button>
+      <div class="text-center text-xs text-gray-600">
+        Already have an account? 
+        <a href="loginOne.html" class="text-green-600 hover:underline">Login</a>
+      </div>
+    </form>
+  </div>
+
+  <!-- Error Modal -->
+  <div id="errorModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white rounded shadow p-4 w-full max-w-md mx-4">
+      <div class="flex items-center mb-3">
+        <div class="bg-red-100 p-2 rounded-full mr-2">
+          <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+        </div>
+        <h3 class="text-base font-medium text-red-600" id="errorTitle">Error</h3>
+      </div>
+      <p class="text-xs text-gray-500 mb-3" id="errorMessage"></p>
+      <div class="flex justify-end">
+        <button class="w-full bg-red-600 text-white px-3 py-1.5 rounded text-xs hover:bg-red-700 focus:outline-none close-error-modal">
+          OK
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success Modal -->
+  <div id="actionSuccessModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white rounded shadow w-full max-w-xs mx-4 p-4 text-center">
+      <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+        <svg class="h-5 w-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+        </svg>
+      </div>
+      <h3 class="text-base font-medium text-gray-900 mb-1" id="successModalTitle">Action Completed</h3>
+      <p class="text-xs text-gray-500 mb-3" id="successModalMessage">The action has been completed successfully.</p>
+      <button type="button" class="w-full px-3 py-1.5 text-xs font-medium text-white bg-green-600 rounded hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 close-success-modal">
+        OK
+      </button>
+    </div>
+  </div>
+
+  <script src="registrationOne.js"></script>
+</body>
+</html>

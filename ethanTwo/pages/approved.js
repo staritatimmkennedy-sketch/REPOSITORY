@@ -74,15 +74,12 @@ $(function () {
             Manage ▾
           </button>
           <div class="dropdown-menu hidden absolute right-0 mt-1 w-40 bg-white border rounded-md shadow-md z-50">
-            <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 review-submission" 
+            <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 border-b border-gray-200 review-submission" 
                data-id="${row.materialSubmission_id}" 
                data-status="${librarianStatus}">Review</a>
-            <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 publish-submission" 
+            <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 border-b border-gray-200 publish-submission" 
                data-id="${row.materialSubmission_id}" 
                data-status="${librarianStatus}">Publish</a>
-            <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 reject-submission" 
-               data-id="${row.materialSubmission_id}" 
-               data-status="${librarianStatus}">Reject</a>
           </div>
         </div>
       `;
@@ -163,26 +160,7 @@ $(function () {
       $('.dropdown-menu').addClass('hidden');
     });
 
-    // Reject submission
-    $(document).off('click', '.reject-submission').on('click', '.reject-submission', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      const submissionId = $(this).data('id');
-      const currentStatus = $(this).data('status');
-      
-      console.log("Current status:", currentStatus);
-      
-      if (currentStatus === 'Published') {
-        showPublishError('Published materials cannot be rejected. Please contact administrator for any changes.');
-        $('.dropdown-menu').addClass('hidden');
-        return;
-      }
-      
-      if (confirm('Are you sure you want to reject this approved material? This will send it back to the dean for review.')) {
-        updateSubmissionStatus(submissionId, 'Rejected');
-      }
-      $('.dropdown-menu').addClass('hidden');
-    });
+
 
     // Review submission
     $(document).off('click', '.review-submission').on('click', '.review-submission', function(e) {
@@ -421,9 +399,8 @@ $(function () {
 
   function getLibrarianStatusClass(status) {
     if (status === 'Published') return 'w-[84px] border-blue-500 bg-blue-100 text-blue-700';
-    if (status === 'Not Published') return 'border-gray-500 bg-gray-100 text-gray-700';
+    if (status === 'Not Published') return 'border-orange-500 bg-orange-100 text-orange-700';
     if (status === 'Pending') return 'border-yellow-400 bg-yellow-100 text-yellow-700';
-    if (status === 'Rejected') return 'w-[84px] border-red-500 bg-red-100 text-red-700';
     return 'border-gray-500 bg-gray-100 text-gray-700';
   }
 

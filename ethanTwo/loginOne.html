@@ -4,66 +4,40 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Login to Your Account</title>
-<link rel="stylesheet" href ="loginOnecss.css">
+<script src="https://cdn.tailwindcss.com"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="loginOne.js"></script>
 </head>
-  <body>
-    <?php include __DIR__ . '/sidebar.php'; ?>
-    <?php include __DIR__ . '/pages/collegeModal.html'; ?>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen p-4">
+  <div class="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
+    <h2 class="text-xl font-bold text-center mb-4">Login to Your Account</h2>
+
 
     
-    <!-- Main -->
-    <main class="flex-1 flex flex-col">
-        <?php include __DIR__ . '/header.php'; ?>
-        <div class="p-6">
-            <?php include $contentFile; ?>
+    <!-- Login Form -->
+    <form action="" name="login" id="loginForm">
+      <div id="error" class="text-red-500 text-xs mb-3 text-center font-medium bg-red-50 p-2 rounded border border-red-200 hidden"></div>              <input type="text" id="username" name="username" placeholder="Enter your username" 
+               class="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-green-500 focus:outline-none mb-3" required>
+
+        <label for="password" class="block font-medium text-gray-700 mb-1 text-sm">Password</label>
+        <input type="password" id="password" name="password" placeholder="Enter your password" 
+               class="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-green-500 focus:outline-none mb-3" required>
+
+        <div class="flex items-center mb-3">
+          <input type="checkbox" id="show-pass" class="w-4 h-4 mr-2">
+          <label for="show-pass" class="text-xs">Show password</label>
         </div>
-    </main>
 
-    <!-- Scripts -->
-    <script src="app.js"></script>
-    <?php include __DIR__ . '/pages/add_role_modal.php'; ?>
-    <?php include __DIR__ . '/pages/add_user_modal.html'; ?>
-    <?php include __DIR__ . '/pages/manage_user_modal.html'?>
-    <?php include __DIR__ . '/pages/add_material_type.html'?>
-    <?php include __DIR__ . '/pages/delete_user_modal.html'?>
-    <?php include __DIR__ . '/pages/add_course_modal.php'; ?>
-    <?php include __DIR__ . '/pages/update_role_modal.php'?>
-    <?php include __DIR__ . '/pages/delete_role_modal.php'?>
-    <?php include __DIR__ . '/pages/update_material_type_modal.php'; ?>
-    <?php include __DIR__ . '/pages/delete_material_type_modal.php'; ?>
-    <?php include __DIR__ . '/pages/editCollegeModal.html'; ?>
-    <?php include __DIR__ . '/pages/deleteCollegeModal.html'; ?>
-    <?php include __DIR__ . '/pages/edit_course_modal.php';?>
-    <?php include __DIR__ . '/pages/delete_course_modal.php'; ?>
-    <div class="container">
-      <h2>Login to Your Account</h2>
 
-      <div id="error"></div>
-      
-      <!-- Login Form -->
-      <form action="" name="login">
-          <label for="username">Username</label>
-          <input form="login"type="text" id="username" name="username" placeholder="Enter your username" required>
+        <button type="submit" id="btn-submit" 
+                class="w-full py-2 bg-green-700 text-white rounded font-medium hover:bg-green-800 transition duration-200 mb-3 text-sm">
+          Login
+        </button>
+        <div class="text-center text-xs text-gray-600">
+          Don't have an account? <a href="registration.php" class="text-green-600 hover:underline">Register</a>
+        </div>
+    </form>
+  </div>
 
-          <label for="password">Password</label>
-          <input form="login"type="password" id="password" name="password" placeholder="Enter your password" required>
-
-          <div class="checkbox">
-            <input form="login" type="checkbox" id="show-pass">
-            <label for="show-pass">Show password</label>
-          </div>
-
-          <div class="forgot-password">
-            <a href="forgot_password.php">Forgot password?</a>
-          </div>
-
-          <button form="login" type="submit" id="btn-submit">Login</button>
-          <div class="register-link">
-            Don't have an account? <a href="registrationOne.php">Register</a>
-          </div>
-      </form>
-    </div>
-  </body>
+  <script src="loginOne.js"></script>
+</body>
 </html>

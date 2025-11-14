@@ -208,7 +208,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                 <div class="relative inline-block text-left">
                                     <button class="w-24 text-center px-3 py-1 bg-gray-200 border border-gray-400 text-sm rounded-md hover:bg-gray-300 focus:outline-none whitespace-nowrap">Manage ▾</button>
                                     <div class="hidden absolute right-0 mt-1 w-40 bg-white border rounded-md shadow-md z-10">
-                                        <a href="#view" class="block px-4 py-2 text-sm hover:bg-gray-100">View User</a>
+                                        <a href="#view" class="block px-4 py-2  text-sm hover:bg-gray-100 ">View User</a>
                                         <a href="#edit" class="block px-4 py-2 text-sm hover:bg-gray-100">Edit User</a>
                                         <a href="#delete" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Delete User</a>
                                     </div>

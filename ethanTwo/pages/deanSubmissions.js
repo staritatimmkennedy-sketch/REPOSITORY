@@ -1,10 +1,12 @@
 $(function () {
   const $tbody = $("#deanSubmissionBody");
   let submissionsData = [];
+  let currentSubmissionId = null;
 
   loadDeanSubmissions();
   initializeFilters();
   initializeDropdowns();
+  initializeModalHandlers();
 
   function loadDeanSubmissions() {
     $tbody.html(`<tr><td colspan="11" class="px-4 py-3 text-center text-sm text-gray-500">Loading submissions...</td></tr>`);
@@ -100,22 +102,26 @@ $(function () {
   }
 
   function getActionButtons(row, status) {
-    // ✅ FIXED: Use exact string comparison for 'Pending'
     if (status !== 'Pending') {
-      return `<span class="text-gray-500 text-sm">Completed</span>`;
+        return `
+        <div class="relative inline-block text-left">
+            <button disabled class="manage-btn w-24 px-3 py-1 bg-gray-100 border border-gray-300 text-gray-400 text-sm rounded-md cursor-not-allowed">
+                Manage ▾
+            </button>
+        </div>`;
     }
-  
+
     return `
-      <div class="relative inline-block text-left">
+    <div class="relative inline-block text-left">
         <button class="manage-btn w-24 px-3 py-1 bg-gray-200 border border-gray-400 text-sm rounded-md hover:bg-gray-300 focus:outline-none">
-          Manage ▾
+            Manage ▾
         </button>
         <div class="dropdown-menu hidden absolute right-0 mt-1 w-40 bg-white border rounded-md shadow-md z-50">
-          <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 review-submission" data-id="${row.materialSubmission_id}">Review</a>
-          <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 approve-submission" data-id="${row.materialSubmission_id}">Approve</a>
-          <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 reject-submission" data-id="${row.materialSubmission_id}">Reject</a>
+            <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 border-b border-gray-200 review-submission" data-id="${row.materialSubmission_id}">Review</a>
+            <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 border-b border-gray-200 approve-submission-modal" data-id="${row.materialSubmission_id}">Approve</a>
+            <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 reject-submission-modal" data-id="${row.materialSubmission_id}">Reject</a>
         </div>
-      </div>`;
+    </div>`;
   }
 
   /* ------------------------------------------------------------------ */
@@ -165,22 +171,58 @@ $(function () {
   }
 
   /* ------------------------------------------------------------------ */
+  /*  MODAL HANDLERS                                                    */
+  /* ------------------------------------------------------------------ */
+  function initializeModalHandlers() {
+    // Close modal handlers
+    $('.close-approve-modal').on('click', function () {
+      $('#approveModal').addClass('hidden');
+    });
+
+    $('.close-reject-modal').on('click', function () {
+      $('#rejectModal').addClass('hidden');
+    });
+
+    $('.close-success-modal').on('click', function () {
+      $('#actionSuccessModal').addClass('hidden');
+    });
+
+    // Confirm action handlers
+    $('#confirmApprove').on('click', function () {
+      if (currentSubmissionId) {
+        const remarks = $('#approveRemarks').val();
+        updateSubmissionStatus(currentSubmissionId, 'Approved', remarks);
+      }
+    });
+
+    $('#confirmReject').on('click', function () {
+      if (currentSubmissionId) {
+        updateSubmissionStatus(currentSubmissionId, 'Rejected', '');
+      }
+    });
+  }
+
+  /* ------------------------------------------------------------------ */
   /*  ACTIONS (Approve / Reject / Review)                               */
   /* ------------------------------------------------------------------ */
   function initializeActions() {
-          // Approve - should send 'Approved'
-      $(document).off('click', '.approve-submission').on('click', '.approve-submission', function (e) {
-        e.preventDefault();
-        const id = $(this).data('id');
-        if (confirm('Approve this submission?')) updateSubmissionStatus(id, 'Approved'); // ✅ Capital A
-      });
+    // Approve Modal
+    $(document).off('click', '.approve-submission-modal').on('click', '.approve-submission-modal', function (e) {
+      e.preventDefault();
+      const id = $(this).data('id');
+      currentSubmissionId = id;
+      $('.dropdown-menu').addClass('hidden');
+      $('#approveModal').removeClass('hidden');
+    });
 
-      // Reject - should send 'Rejected'  
-      $(document).off('click', '.reject-submission').on('click', '.reject-submission', function (e) {
-        e.preventDefault();
-        const id = $(this).data('id');
-        if (confirm('Reject this submission?')) updateSubmissionStatus(id, 'Rejected'); // ✅ Capital R
-      });
+    // Reject Modal
+    $(document).off('click', '.reject-submission-modal').on('click', '.reject-submission-modal', function (e) {
+      e.preventDefault();
+      const id = $(this).data('id');
+      currentSubmissionId = id;
+      $('.dropdown-menu').addClass('hidden');
+      $('#rejectModal').removeClass('hidden');
+    });
 
     // Review
     $(document).off('click', '.review-submission').on('click', '.review-submission', function (e) {
@@ -213,18 +255,22 @@ $(function () {
       });
     });
 
-    // Close modal
+    // Close PDF modal
     $(document).off('click', '#closeModal, #closeModalBtn').on('click', '#closeModal, #closeModalBtn', function () {
       $('#reviewModal').addClass('hidden');
-      $('#pdfViewer').attr('src', ''); // Clear
+      $('#pdfViewer').attr('src', '');
     });
   }
 
-  function updateSubmissionStatus(submissionId, status) {
+  function updateSubmissionStatus(submissionId, status, remarks = '') {
     $.ajax({
       url: 'pages/update_dean_decision.php',  
       type: 'POST',
-      data: { submission_id: submissionId, status: status },
+      data: { 
+        submission_id: submissionId, 
+        status: status,
+        remarks: remarks 
+      },
       success: function (resp) {
         let result;
         try { 
@@ -234,8 +280,18 @@ $(function () {
         }
   
         if (result.success) {
-          // ✅ FIXED: Use 'Approved' instead of 'APPROVED'
-          alert(`Submission ${status === 'Approved' ? 'approved' : 'rejected'}!`);
+          // Close the current modal
+          $('#approveModal').addClass('hidden');
+          $('#rejectModal').addClass('hidden');
+          
+          // Show success modal
+          $('#successModalTitle').text(status === 'Approved' ? 'Submission Approved' : 'Submission Rejected');
+          $('#successModalMessage').text(status === 'Approved' 
+            ? 'The submission has been approved successfully.' 
+            : 'The submission has been rejected.');
+          $('#actionSuccessModal').removeClass('hidden');
+          
+          // Reload submissions
           loadDeanSubmissions();
         } else {
           alert('Error: ' + (result.error || 'unknown'));
@@ -251,18 +307,20 @@ $(function () {
   /*  HELPERS                                                           */
   /* ------------------------------------------------------------------ */
   function getStatusClass(status) {
-    // ✅ FIXED: Use exact string comparison instead of uppercase
-    if (status === 'Approved')   return 'border-green-500 bg-green-100 text-green-700';
-    if (status === 'Published')  return 'border-blue-500 bg-blue-100 text-blue-700';
-    if (status === 'Reject') return 'border-red-500 bg-red-100 text-red-700';
-    return 'border-yellow-400 bg-yellow-100 text-yellow-700'; // Pending
+    const colors = {
+      Pending: "w-[84px] border-yellow-400 bg-yellow-100 text-yellow-700",
+      Approved: "w-[84px] border-green-500 bg-green-100 text-green-700",
+      Denied: "w-[84px] border-red-500 bg-red-100 text-red-700",
+      Rejected: "w-[84px] border-red-500 bg-red-100 text-red-700"
+    };
+    return colors[status] || "w-[84px] border-gray-300 bg-gray-100 text-gray-700";
   }
 
   function getLibStatusClass(status) {
-    const s = status.toUpperCase();
-    if (s === 'Published')  return 'border-blue-500 bg-blue-100 text-blue-700';
-    if (s === 'Not Published') return 'border-gray-400 bg-gray-100 text-gray-700';
-    return 'border-gray-400 bg-gray-100 text-gray-700';
+    if (status === 'Published') return 'w-[84px] border-blue-500 bg-blue-100 text-blue-700';
+    if (status === 'Not Published') return 'border-orange-500 bg-orange-100 text-orange-700';
+    if (status === 'Pending') return 'border-yellow-400 bg-yellow-100 text-yellow-700';
+    return 'border-gray-500 bg-gray-100 text-gray-700';
   }
 
   function formatDate(str) {

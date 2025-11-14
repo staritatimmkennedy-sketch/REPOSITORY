@@ -63,7 +63,7 @@ $(function () {
             $tbody.html(`<tr><td colspan="8" class="px-4 py-3 text-center text-gray-500">No records found.</td></tr>`);
             return;
         }
-
+    
         let html = data.map(r => {
             console.log('Row data:', r);
             const materialBorrowingId = r.materialBorrowing_id || r.material_borrowing_id || r.materialBorrowingId || '';
@@ -73,16 +73,19 @@ $(function () {
             const isApproved = (r.borrowStatus || '').toLowerCase() === 'approved';
             
             const actionCell = isApproved ? 
-                `<button class="manage-btn px-3 py-1 bg-gray-200 rounded border text-xs hover:bg-gray-300" 
-                         data-callnumber="${esc(callNumber)}" 
-                         data-id="${esc(materialBorrowingId)}">
-                    Manage
-                </button>` :
-                `<button class="view-details px-3 py-1 rounded-md border hover:bg-gray-100 text-xs" 
-                         data-row='${encodeURIComponent(JSON.stringify(r))}'>
-                    Details
-                </button>`;
-
+                `<div class="relative inline-block text-left">
+                    <button class="manage-btn w-24 px-3 py-1 bg-gray-200 border border-gray-400 text-sm rounded-md hover:bg-gray-300 focus:outline-none"
+                            data-callnumber="${esc(callNumber)}" 
+                            data-id="${esc(materialBorrowingId)}">
+                        Manage ▾
+                    </button>
+                </div>` :
+                    `<button class="view-details  gap-2 w-23 px-3 py-1 bg-gray-200 border border-gray-400 text-sm rounded-md hover:bg-gray-300 focus:outline-none"
+                            data-row='${encodeURIComponent(JSON.stringify(r))}'>
+                        <span class="flex-1 text-center">Details</span>
+                        
+                    </button>`;
+    
             return `
                 <tr class="border-b hover:bg-gray-50">
                     <td class="px-4 py-3 text-sm">${fmt(r.borrowedDate)}</td>
@@ -98,7 +101,7 @@ $(function () {
                 </tr>
             `;
         }).join("");
-
+    
         $tbody.html(html);
         initializeActions();
     }
@@ -232,9 +235,9 @@ $(function () {
         closeAllDropdowns();
         
         const $menu = $(`
-            <div class="bg-white border rounded-md shadow-lg py-1 min-w-32 z-50">
-                <a href="#" class="view-material block px-4 py-2 text-xs text-gray-700 hover:bg-gray-100">View</a>
-                <a href="#" class="return-material block px-4 py-2 text-xs text-gray-700 hover:bg-gray-100">Return</a>
+            <div class="bg-white border border-gray-300 rounded-md shadow-lg z-50 w-48">
+                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 border-b border-gray-200 view-material">View Details</a>
+                <a href="#" class="block px-4 py-2 text-sm text-blue-600 hover:bg-gray-100 return-material">Return Material</a>
             </div>
         `);
         
@@ -242,7 +245,7 @@ $(function () {
         
         const rect = $btn[0].getBoundingClientRect();
         const top = rect.bottom + window.scrollY + 5;
-        const left = rect.left + window.scrollX;
+        const left = rect.left + window.scrollX - 93; // Move left by dropdown width
         
         $menu.css({
             position: 'absolute',

@@ -1,110 +1,152 @@
-<div id="materials" class="p-6">
+<div class="p-6">
   <div class="bg-white border rounded-lg p-4 mb-6 shadow-sm">
-    <div class="flex flex-col sm:flex-row sm:items-center gap-3">
-      <input type="text" id="searchType" placeholder="Search by ID, name or description"
-          class="flex-grow px-4 py-2 border rounded-md text-sm focus:ring focus:ring-green-500 focus:outline-none">
-    </div>
+      <div class="flex flex-col sm:flex-row sm:items-center gap-3">
+          <input type="text" id="searchMaterials" placeholder="Search by title, author, call number, etc."
+                 class="flex-grow px-4 py-2 border rounded-md text-sm focus:ring focus:ring-green-500 focus:outline-none">
+      </div>
   </div>
 
   <div class="bg-white rounded-lg shadow overflow-x-auto">
-    <table class="w-full border-collapse" id="materialsTable">
-      <thead class="bg-gray-100 border-b">
-        <tr>
-          <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">ID</th>
-          <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Material Name</th> 
-          <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Description</th>
-          <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Author</th>
-          <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Call Number</th>
-          <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Librarian ID</th>
-          <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Submission ID</th>
-          <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Status</th>
-          <th class="px-4 py-3 text-center text-sm font-semibold text-gray-600">Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php foreach ($materials as $m): ?>
-          <tr class="border-b hover:bg-gray-50">
-            <td class="px-4 py-3 text-sm"><?= htmlspecialchars($m['materialPublishing_id']) ?></td>
-            <td class="px-4 py-3 text-sm"><?= htmlspecialchars($m['materialName']) ?></td>
-            <td class="px-4 py-3 text-sm truncate max-w-xs" title="<?= htmlspecialchars($m['materialDescription']) ?>">
-              <?= htmlspecialchars(strlen($m['materialDescription']) > 80 ? substr($m['materialDescription'], 0, 77) . '...' : $m['materialDescription']) ?>
-            </td>
-            <td class="px-4 py-3 text-sm"><?= htmlspecialchars($m['author_fullname']) ?></td>
-            <td class="px-4 py-3 text-sm"><?= htmlspecialchars($m['callNumber']) ?></td>
-            <td class="px-4 py-3 text-sm"><?= htmlspecialchars($m['librarian_id']) ?></td>
-            <td class="px-4 py-3 text-sm"><?= htmlspecialchars($m['materialSubmission_id']) ?></td>
-            <td class="px-4 py-3 text-sm"><?= htmlspecialchars($m['materialStatus']) ?></td>
-            <td class="px-4 py-3 text-center">
-              <div class="relative inline-block text-left">
-                <button class="px-3 py-1 bg-gray-200 border border-gray-400 text-xs rounded hover:bg-gray-300">
-                  Manage
-                </button>
-                <div class="hidden absolute right-0 mt-1 w-40 bg-white border rounded-md shadow-md z-20">
-                  <a href="#" class="edit-material block px-4 py-2 text-sm hover:bg-gray-100">Edit Material</a>
-                  <a href="#" class="delete-material block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Remove Material</a>
-                </div>
-              </div>
-            </td>
-          </tr>
-        <?php endforeach; ?>
-        <?php if (empty($materials)): ?>
-          <tr>
-            <td colspan="9" class="px-4 py-8 text-center text-gray-500">No published materials found.</td>
-          </tr>
-        <?php endif; ?>
-      </tbody>
-    </table>
+      <table class="w-full border-collapse">
+          <thead class="bg-gray-100 border-b">
+              <tr>
+                  <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Call Number</th>
+                  <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Title</th>
+                  <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Description</th>
+                  <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Author</th>
+                  <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Type</th>
+                  <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">File</th>
+                  <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Submitted By</th>
+                  <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">College</th>
+                  <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Course</th>
+                  <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Status</th>
+                  <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Published Date</th>
+                  <th class="px-4 py-3 text-center text-sm font-semibold text-gray-600">Action</th>
+              </tr>
+          </thead>
+          <tbody id="materialsRecordsTbody">
+              <!-- Dynamic content -->
+          </tbody>
+      </table>
   </div>
+
+<!-- Add this modal after your existing modals -->
+<div id="archiveConfirmModal" class="hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+    <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md mx-4">
+        <div class="flex items-center mb-4">
+            <div class="bg-blue-100 p-2 rounded-full mr-3">
+                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                </svg>
+            </div>
+            <h3 class="text-lg font-medium text-blue-600" id="archiveConfirmTitle">Archive Material</h3>
+        </div>
+        <p class="text-sm text-gray-500 mb-4" id="archiveConfirmMessage"></p>
+        <div class="flex justify-end space-x-3">
+            <button class="px-4 py-2 text-sm border border-gray-300 rounded-md hover:bg-gray-100 focus:outline-none close-archive-modal">
+                Cancel
+            </button>
+            <button class="px-4 py-2 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none confirm-archive">
+                Archive
+            </button>
+        </div>
+    </div>
 </div>
 
-<div id="editModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-  <div class="bg-white rounded-lg shadow-lg w-full max-w-lg p-6">
-    <h3 class="text-lg font-semibold mb-4">Edit Material</h3>
 
-    <form id="editForm" class="space-y-4">
-      <input type="hidden" id="editPublishingId">
-      <div><label class="block text-sm font-medium text-gray-700">Material Name</label>
-        <input type="text" id="editName" class="mt-1 w-full px-3 py-2 border rounded-md" required></div>
-      <div><label class="block text-sm font-medium text-gray-700">Description</label>
-        <textarea id="editDesc" class="mt-1 w-full px-3 py-2 border rounded-md" rows="3" required></textarea></div>
-      <div class="grid grid-cols-3 gap-2">
-        <div><label class="block text-sm font-medium text-gray-700">Firstname</label>
-          <input type="text" id="editFirst" class="mt-1 w-full px-3 py-2 border rounded-md"></div>
-        <div><label class="block text-sm font-medium text-gray-700">M.I.</label>
-          <input type="text" id="editMI" maxlength="1" class="mt-1 w-full px-3 py-2 border rounded-md"></div>
-        <div><label class="block text-sm font-medium text-gray-700">Lastname</label>
-          <input type="text" id="editLast" class="mt-1 w-full px-3 py-2 border rounded-md"></div>
-      </div>
-      <div><label class="block text-sm font-medium text-gray-700">Call Number</label>
-        <input type="text" id="editCall" class="mt-1 w-full px-3 py-2 border rounded-md" required></div>
-      <div class="flex justify-end gap-2 pt-4 border-t">
-        <button type="submit" id="saveBtn" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 font-medium">
-          Save Changes
-        </button>
-        <button type="button" id="closeEdit" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 font-medium">
-          Cancel
-        </button>
-      </div>
-    </form>
-  </div>
+<!-- Add Republish Confirmation Modal -->
+<div id="republishConfirmModal" class="hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+    <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md mx-4">
+        <div class="flex items-center mb-4">
+            <div class="bg-green-100 p-2 rounded-full mr-3">
+                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+            </div>
+            <h3 class="text-lg font-medium text-green-600" id="republishConfirmTitle">Republish Material</h3>
+        </div>
+        <p class="text-sm text-gray-500 mb-4" id="republishConfirmMessage"></p>
+        <div class="flex justify-end space-x-3">
+            <button class="px-4 py-2 text-sm border border-gray-300 rounded-md hover:bg-gray-100 focus:outline-none close-republish-modal">
+                Cancel
+            </button>
+            <button class="px-4 py-2 text-sm bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none confirm-republish">
+                Republish
+            </button>
+        </div>
+    </div>
 </div>
 
-<div id="deleteModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-  <div class="bg-white rounded-lg shadow-lg w-full max-w-sm p-6 text-center">
-    <h3 class="text-lg font-semibold mb-3">Remove Material?</h3>
-    <p class="text-gray-600 mb-5">This action cannot be undone.</p>
-    
-    <input type="hidden" id="deletePublishingId"> 
 
-    <div class="flex justify-center gap-4 mt-5">
-      <button type="button" id="closeDelete" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 font-medium">
-        Cancel
-      </button>
-      <button type="button" id="confirmDelete" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 font-medium">
-        Yes, Remove
-      </button>
+<!-- Success Modal -->
+<div id="successModal" class="hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+    <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md mx-4">
+        <div class="flex items-center mb-4">
+            <div class="bg-green-100 p-2 rounded-full mr-3">
+                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+            </div>
+            <h3 class="text-lg font-medium text-green-600" id="successTitle">Success</h3>
+        </div>
+        <p class="text-sm text-gray-500 mb-4" id="successMessage"></p>
+        <div class="flex justify-end">
+            <button class="w-full bg-green-600 text-white px-4 py-2 rounded text-sm hover:bg-green-700 focus:outline-none close-success-modal">
+                OK
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Error Modal -->
+<div id="errorModal" class="hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+    <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md mx-4">
+        <div class="flex items-center mb-4">
+            <div class="bg-red-100 p-2 rounded-full mr-3">
+                <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+            </div>
+            <h3 class="text-lg font-medium text-red-600" id="errorTitle">Error</h3>
+        </div>
+        <p class="text-sm text-gray-500 mb-4" id="errorMessage"></p>
+        <div class="flex justify-end">
+            <button class="w-full bg-red-600 text-white px-4 py-2 rounded text-sm hover:bg-red-700 focus:outline-none close-error-modal">
+                OK
+            </button>
+        </div>
+    </div>
+</div>
+
+
+
+
+  <!-- Review Modal with PDF Viewer -->
+  <div id="reviewModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-5xl h-[85vh] flex flex-col">
+      <!-- Header -->
+      <div class="flex justify-between items-center p-4 border-b">
+        <h2 class="text-xl font-bold text-gray-800">Review Material (PDF)</h2>
+        <button id="closeModalBtn" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+      </div>
+
+      <!-- PDF Viewer + Loading -->
+      <div class="flex-1 relative overflow-hidden bg-gray-50">
+        <iframe id="pdfViewer" class="absolute inset-0 w-full h-full border-0"></iframe>
+
+        <!-- Loading Spinner -->
+        <div id="pdfLoading" class="hidden absolute inset-0 flex flex-col items-center justify-center bg-white bg-opacity-80">
+          <div class="animate-spin rounded-full h-12 w-12 border-b-4 border-blue-600"></div>
+          <p class="mt-3 text-gray-700 font-medium">Loading PDF...</p>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="p-4 border-t text-right">
+        <button id="closeModal" class="px-5 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">Close</button>
+      </div>
     </div>
   </div>
 </div>
+</div>
 
-<script src="pages/materials.js"></script>
