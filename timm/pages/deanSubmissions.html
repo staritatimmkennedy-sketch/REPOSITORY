@@ -1,0 +1,76 @@
+<div id="deanSubmissions" class="p-6">
+  <!-- Header -->
+  <div class="bg-white border rounded-lg p-4 mb-6 shadow-sm">
+    <!-- Search, Filters & Add Button -->
+    <div class="flex flex-col sm:flex-row sm:items-center gap-3">
+      <!-- Search Bar -->
+      <input type="text" id="searchSubmissions" placeholder="Search by student, title, or description..."
+             class="flex-grow px-4 py-2 border rounded-md text-sm focus:ring focus:ring-green-500 focus:outline-none">
+      
+      <!-- Material Type Filter -->
+      <select id="typeFilter" class="px-3 py-2 border rounded-md text-sm focus:ring focus:ring-green-500 focus:outline-none">
+        <option value="">All Types</option>
+        <option value="THESIS">Thesis</option> <!-- Match DB materialType_id -->
+        <option value="RESEARCH">Research Paper</option>
+        <option value="CAPSTONE">Capstone</option>
+        <option value="BOOK">Book</option>
+        <option value="JOURNAL">Journal</option>
+      </select>
+
+      <!-- Status Filter -->
+      <select id="statusFilter" class="px-3 py-2 border rounded-md text-sm focus:ring focus:ring-green-500 focus:outline-none">
+        <option value="">All Status</option>
+        <option value="PENDING">Pending</option> <!-- Match DB approvalStatus -->
+        <option value="APPROVED">Approved</option>
+        <option value="PUBLISHED">Published</option>
+        <option value="DENIED">Denied</option>
+        <option value="REJECTED">Rejected</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="bg-white rounded-lg shadow overflow-visible">
+    <table class="w-full border-collapse text-left" id="submissionsTable">
+      <thead class="bg-gray-100 border-b">
+        <tr>
+          <th class="px-4 py-3 text-sm font-semibold text-gray-600">User</th>
+          <th class="px-4 py-3 text-sm font-semibold text-gray-600">Title</th>
+          <th class="px-4 py-3 text-sm font-semibold text-gray-600">Material Type</th>
+          <th class="px-4 py-3 text-sm font-semibold text-gray-600">Author</th>
+          <th class="px-4 py-3 text-sm font-semibold text-gray-600">Date Submitted</th>
+          <th class="px-4 py-3 text-sm font-semibold text-gray-600">Approval Date</th>
+          <th class="px-4 py-3 text-sm font-semibold text-gray-600">Description</th>
+          <th class="px-4 py-3 text-sm font-semibold text-gray-600">File</th>
+          <th class="px-4 py-3 text-sm font-semibold text-gray-600">Status</th>
+          <th class="px-4 py-3 text-sm font-semibold text-gray-600 text-center">Action</th>
+        </tr>
+      </thead>
+      <tbody id="deanSubmissionBody">
+        <!-- Data will be populated by JavaScript -->
+        <tr>
+          <td colspan="9" class="px-4 py-3 text-center text-sm text-gray-500">Loading submissions...</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+    <!-- PDF Review Modal -->
+  <div id="reviewModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div class="bg-white rounded-lg shadow-xl w-11/12 max-w-5xl h-5/6 flex flex-col">
+          <div class="flex justify-between items-center p-4 border-b">
+              <h3 class="text-lg font-semibold">PDF Preview</h3>
+              <button id="closeModalBtn" class="text-2xl text-gray-600 hover:text-gray-800">&times;</button>
+          </div>
+          <div class="flex-1 p-4 overflow-hidden">
+              <iframe id="pdfViewer" class="w-full h-full border-0"></iframe>
+          </div>
+          <div class="p-4 border-t text-right">
+              <button id="closeModal" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Close</button>
+          </div>
+      </div>
+  </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="pages/deanSubmissions.js"></script>
